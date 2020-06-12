@@ -1,0 +1,273 @@
+<html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta content="width=device-width, initial-scale=1" name="viewport"><title>Parseltongue Speech - Posts</title><style type="text/css">
+*
+{
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  -ms-box-sizing     : border-box;
+  -o-box-sizing      : border-box;
+  box-sizing         : border-box;
+  text-rendering     : geometricPrecision;
+}
+
+html
+{
+  font-size        : 100%;
+  font-family      : "Menlo","Monaco","Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono","Courier New", monospace,serif;
+  min-height       : 100%;
+  background-color : #282828;
+  color            : #ebdbb2;
+}
+
+body
+{
+  font-size   : 1rem;
+  line-height : 1.5rem;
+  margin      : 0px 0px 0px 0px;
+  word-wrap   : break-word;
+  min-height  : 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+code,
+footer,
+header,
+li,
+ol,
+p,
+section,
+ul
+{
+  float   : none;
+  margin  : 0px 0px 0px 0px;
+  padding : 0px 0px 0px 0px;
+}
+
+header > h1
+{
+  position  : relative;
+  display   : inline-block;
+  display   : table-cell;
+  color     : #458588;
+  font-size : 1.19999rem;
+  padding   : 1.5rem 0rem 2rem 0rem;
+  overflow  : hidden;
+}
+
+header > h1::after
+{
+  content  : "========================================================================================================================";
+  position : absolute;
+  bottom   : 0.75rem;
+  left     : 0rem;
+}
+
+header > h1::before
+{
+  content : "";
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a,
+a
+{
+  color           : #fb4934;
+  text-decoration : none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+  line-height   : 1.3em;
+  font-size     : 1.1rem;
+  color         : #98971a;
+  position      : relative;
+  margin-bottom : 0.75rem;
+}
+
+h1::before
+{
+  display : inline;
+  content : "# ";
+}
+
+h2::before
+{
+  display : inline;
+  content : "## ";
+}
+
+h3::before
+{
+  display : inline;
+  content : "### ";
+}
+
+h4::before
+{
+  display : inline;
+  content : "#### ";
+}
+
+h5::before
+{
+  display : inline;
+  content : "##### ";
+}
+
+h6::before
+{
+  display : inline;
+  content : "###### ";
+}
+
+li
+{
+  position      : relative;
+  display       : block;
+  padding-left  : 20px;
+  margin-bottom : 0.2rem;
+}
+
+li::after
+{
+  position : absolute;
+  top      : 0px;
+  left     : 0px;
+}
+
+ul > li::after
+{
+  content : "-";
+}
+
+ol
+{
+  counter-reset : a;
+}
+
+ol > li::after
+{
+  content           : counter(a) ".";
+  counter-increment : a;
+}
+
+
+:not(li) > p,
+:not(li) > ol,
+:not(li) > ul
+{
+  margin-bottom : 1rem;
+}
+
+blockquote
+{
+  position      : relative;
+  padding-left  : 1rem;
+  margin-top    : 0.5rem;
+  margin-bottom : 1rem;
+  overflow      : hidden;
+  color         : #a89984;
+}
+
+blockquote::after
+{
+  content     : ">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A";
+  white-space : pre;
+  position    : absolute;
+  top         : 0px;
+  left        : 0px;
+}
+
+blockquote > p
+{
+  margin-bottom : 0rem;
+}
+
+blockquote,
+code
+{
+  font-size : 1rem;
+}
+
+em
+{
+  font-style : italic;
+}
+
+em::after,
+em::before
+{
+  content : "/";
+  display : inline;
+}
+
+strong
+{
+  color : #d79921;
+}
+
+strong::after,
+strong::before
+{
+  content : "*";
+  display : inline;
+}
+
+
+:not(pre) > code
+{
+  color       : #689d6a;
+  font-family : "Menlo","Monaco","Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono","Courier New", monospace,serif;
+}
+
+:not(pre) > code::after,
+:not(pre) > code::before
+{
+  content : "`";
+  display : inline;
+}
+
+pre
+{
+  background-color : #1d2021;
+  color            : #98971a;
+}
+
+footer
+{
+  color    : #504945;
+  bottom   : 0rem;
+  position : relative;
+}
+
+.container
+{
+  max-width   : 60%;
+  min-height  : 100%;
+  margin      : 0px auto 0px auto;
+  margin-left : 20%;
+  padding     : 0px 1rem 0px 1rem;
+}
+
+.inner
+{
+  min-height : 95%;
+}
+
+
+/* Generated with Clay, http://fvisser.nl/clay */</style></head><body><div class="container"><div class="inner"><a href="/index.html">Home</a> - <a href="/posts.html">Posts</a><header><h1>Posts</h1></header><div><ul><li class="pages">2020-06-08 -&gt; <a href="article/2020-06-08-nixos-things.html">关于Nix的一些事
+</a></li></ul></div></div><footer>EOF</footer></div></body></html>

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+dir=$(dirname $0)
+parseltongue=$(nix-build $dir/generator.nix)
+$parseltongue/bin/speech --input-dir $dir/content --output-dir $dir/docs
