@@ -99,9 +99,9 @@ renderPage route val = html_ [lang_ "en"] $ do
     body_ $ do
         div_ [class_ "container"] $ do
             div_ [class_ "inner"] $ do
-                a_ [href_ "/index.html"] "Home"
+                a_ [href_ "index.html"] "Home"
                 " - "
-                a_ [href_ "/posts.html"] "Posts"
+                a_ [href_ "posts.html"] "Posts"
                 content
             footer_ "EOF"
 
