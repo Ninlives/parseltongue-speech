@@ -142,7 +142,7 @@ pageStyle = do
         marginLeft $ pct 20
         padding (px 0) (rem 1) (px 0) (rem 1)
 
-    S.query M.screen [M.maxWidth (px 320)] $ ".container" ? do
+    S.query M.screen [M.maxWidth (px 500)] $ ".container" ? do
         maxWidth $ pct 100
         marginLeft $ rem 0
         marginRight $ rem 0
