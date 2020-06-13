@@ -18,7 +18,7 @@ import Development.Shake
 import GHC.Generics (Generic)
 import Lucid
 import Main.Utf8
-import Rib (IsRoute, Pandoc)
+import Rib (IsRoute, Pandoc, routeFile)
 import qualified Rib
 import qualified Rib.Parser.Pandoc as Pandoc
 import Text.Pandoc
@@ -27,6 +27,7 @@ import System.FilePath
 import Text.Regex.PCRE
 import Data.Time
 import Data.List
+import Data.Text (pack, unpack)
 
 -- | Route corresponding to each generated static page.
 --
@@ -99,13 +100,14 @@ renderPage route val = html_ [lang_ "en"] $ do
     body_ $ do
         div_ [class_ "container"] $ do
             div_ [class_ "inner"] $ do
-                a_ [href_ "/parseltongue-speech/index.html"] "Home"
+                a_ [href_ $ routeFile Route_Index `relativeTo` url] "Home"
                 " - "
-                a_ [href_ "/parseltongue-speech/posts.html"] "Posts"
+                a_ [href_ $ routeFile Route_Posts `relativeTo` url] "Posts"
                 content
             footer_ "EOF"
 
     where
+        url = routeFile route
         topTitle = "Parseltongue Speech"
         prefix = append topTitle " - "
         articleTitle v = title $ getMeta v
@@ -122,7 +124,7 @@ renderPage route val = html_ [lang_ "en"] $ do
                                     li_ [class_ "pages"] $ do
                                         let meta = getMeta src
                                         toHtml $ (pack $ show date) `append` " -> "
-                                        a_ [href_ (Rib.routeUrlRel r)] $ toHtml $ title meta
+                                        a_ [href_ $ (routeFile r) `relativeTo` url] $ toHtml $ title meta
                                         renderMarkdown `mapM_` description meta
         content :: Html ()
         content = case route of
@@ -144,6 +146,22 @@ renderPage route val = html_ [lang_ "en"] $ do
                         article_ $ do
                             Pandoc.getToC val
                             Pandoc.render val
+
+        relativeTo :: [FilePath] -> [FilePath] -> Text
+        relativeTo a b = pack $ joinPath $ f pa pb
+            where
+                pa = splitDirectories $ head a
+                pb = splitDirectories $ head b
+        
+                f [x] [y] = [x]
+                f (x:xs) (y:ys)
+                    | x == y = f xs ys
+                    | otherwise = f' (x:xs) (y:ys)
+                f x _ = x
+        
+                f' x [y] = x
+                f' x (y:ys) = ".." : f' x ys
+                f' x _ = x
 
 
 -- | Metadata in our markdown sources

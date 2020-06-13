@@ -9,6 +9,8 @@ import Clay.Text (Content(..))
 import qualified Clay as C
 import qualified Clay.Elements as E
 import qualified Clay.Text as T
+import qualified Clay.Stylesheet as S
+import qualified Clay.Media as M
 import Gruvbox as G
 import TextShow
 import Data.Text (Text, append, replicate)
@@ -23,6 +25,7 @@ pageStyle = do
         fontSize $ pct 100
         fontFamily fonts fontFamilies
         minHeight $ pct 100
+        maxWidth $ pct 100
         backgroundColor G.bg
         color G.fg
     body ? do
@@ -31,6 +34,7 @@ pageStyle = do
         margin (px 0) (px 0) (px 0) (px 0)
         wordWrap breakWord
         minHeight $ pct 100
+        maxWidth $ pct 100
     h [1..6] <> blockquote <> code <> footer <> header <> li <> ol <> p <> section <> ul ? do
         float none
         margin (px 0) (px 0) (px 0) (px 0)
@@ -137,6 +141,11 @@ pageStyle = do
         margin (px 0) auto (px 0) auto
         marginLeft $ pct 20
         padding (px 0) (rem 1) (px 0) (rem 1)
+
+    S.query M.screen [M.maxWidth (px 320)] $ ".container" ? do
+        maxWidth $ pct 100
+        marginLeft $ rem 0
+        marginRight $ rem 0
 
     ".inner" ? do
         minHeight $ pct 95
