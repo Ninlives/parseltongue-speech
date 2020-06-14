@@ -2,19 +2,18 @@
 
 module Style where
 
-import Prelude hiding ((**), rem, replicate, not)
+import TextShow
+import Control.Monad
+import Data.Text (append, replicate)
 import Clay hiding (type_, title, map)
 import Clay.Selector (selectorFromText)
-import Clay.Text (Content(..))
-import qualified Clay as C
-import qualified Clay.Elements as E
+import Prelude hiding ((**), rem, replicate, not)
+
+import qualified Gruvbox as G
 import qualified Clay.Text as T
-import qualified Clay.Stylesheet as S
 import qualified Clay.Media as M
-import Gruvbox as G
-import TextShow
-import Data.Text (Text, append, replicate)
-import Control.Monad
+import qualified Clay.Elements as E
+import qualified Clay.Stylesheet as S
 
 pageStyle :: Css
 pageStyle = do
