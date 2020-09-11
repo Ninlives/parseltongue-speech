@@ -44,7 +44,7 @@ pageStyle = do
         display inlineBlock
         display tableCell
         color G.blue
-        fontSize (rem 1.2)
+        fontSize (rem 1.4)
         padding (rem 1.5) (rem 0) (rem 2) (rem 0)
         overflow hidden
     header |> h1 # after ? do
@@ -60,7 +60,7 @@ pageStyle = do
         textDecoration none
     h [1..6] ? do
         lineHeight $ em 1.3
-        fontSize $ rem 1.1
+        fontSize $ rem 1.3
         color G.green
         position relative
         marginBottom $ rem 0.75
@@ -68,6 +68,10 @@ pageStyle = do
         h [n] # before ? do
             display inline
             content $ stringContent $ append (replicate n "#") " "
+
+    forM ([1..6]::[Int]) $ \n -> do
+        (selectorFromText $ append ":not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h" $ showt n) ? do
+            paddingTop $ rem 0.75
 
     li ? do
         position relative
@@ -152,15 +156,7 @@ pageStyle = do
     where
         h :: [Int] -> Selector
         h ns = foldl1 (<>) $ map (\n -> selectorFromText $ append "h" $ showt n) ns
-        fonts = [
-            "Menlo",
-            "Monaco",
-            "Lucida Console",
-            "Liberation Mono",
-            "DejaVu Sans Mono",
-            "Bitstream Vera Sans Mono",
-            "Courier New"
-            ]
+        fonts = []
         fontFamilies = [
             monospace,
             serif

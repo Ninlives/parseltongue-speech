@@ -92,7 +92,7 @@ nix-lang是一种"伪纯函数式"编程语言 -- 为了实用性nix-lang默认�
 
 我们先来看一个最简单的`derivation`定义:
 
-```nix
+```nixos
 derivation {
     name = "busybox";
     builder = "builtin:fetchurl";
@@ -111,7 +111,7 @@ derivation {
 
 如果你正在使用NixOS ~~(那应该就不会来读这篇文档)~~ 或者已经在系统上安装了Nix ~~(如果没有请立即在shell中输入`curl -L https://nixos.org/nix/install | sh`并回车)~~ , 试着将上述代码输入到文件`busybox.nix`中然后执行:
 
-```sh
+```console
 $ nix-build busybox.nix
 ```
 
@@ -123,7 +123,7 @@ $ nix-build busybox.nix
 
 试着执行一下:
 
-```sh
+```console
 $ /nix/store/lan2w3ab1mvpxj3ppiw2sizh8i7rpz7s-busybox
 
 BusyBox v1.23.2 () multi-call binary.
@@ -184,7 +184,7 @@ Currently defined functions:
 
 上一节的例子中不存在对其他`derivation`的依赖, 接下来我们看一个稍微复杂一点的例子:
 
-```nix
+```nixos
 let
   busybox = derivation {
     name = "busybox";
@@ -208,7 +208,7 @@ in
 
 将以上内容写入`hello.nix`, 执行一下`nix-build`看看会发生什么:
 
-```sh
+```console
 $ nix-build hello.nix
 /nix/store/w62gjxd3xj487mv7dgzypgcl32na5daw-hello-world
 

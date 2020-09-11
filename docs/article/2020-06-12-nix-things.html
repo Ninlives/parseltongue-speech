@@ -13,7 +13,7 @@
 html
 {
   font-size        : 100%;
-  font-family      : "Menlo","Monaco","Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono","Courier New", monospace,serif;
+  font-family      : monospace,serif;
   min-height       : 100%;
   max-width        : 100%;
   background-color : #282828;
@@ -57,7 +57,7 @@ header > h1
   display   : inline-block;
   display   : table-cell;
   color     : #458588;
-  font-size : 1.19999rem;
+  font-size : 1.39999rem;
   padding   : 1.5rem 0rem 2rem 0rem;
   overflow  : hidden;
 }
@@ -95,7 +95,7 @@ h5,
 h6
 {
   line-height   : 1.3em;
-  font-size     : 1.1rem;
+  font-size     : 1.3rem;
   color         : #98971a;
   position      : relative;
   margin-bottom : 0.75rem;
@@ -135,6 +135,36 @@ h6::before
 {
   display : inline;
   content : "###### ";
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h1
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h2
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h3
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h4
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h5
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h6
+{
+  padding-top : 0.75rem;
 }
 
 li
@@ -234,7 +264,7 @@ strong::before
 :not(pre) > code
 {
   color       : #689d6a;
-  font-family : "Menlo","Monaco","Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono","Courier New", monospace,serif;
+  font-family : monospace,serif;
 }
 
 :not(pre) > code::after,
@@ -283,7 +313,7 @@ footer
 
 }
 
-/* Generated with Clay, http://fvisser.nl/clay */</style></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>关于Nix的一些事
+/* Generated with Clay, http://fvisser.nl/clay */</style><link href=".././static/gruvbox-highlight.css" rel="stylesheet"><script src=".././static/highlight.min.js"></script><script src=".././static/nix.min.js"></script><script src=".././static/shell.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>关于Nix的一些事
 </h1></header><article><ul>
 <li><a href="#前言">前言</a></li>
 <li><a href="#纯函数式包管理">纯函数式包管理</a></li>
@@ -374,44 +404,44 @@ footer
 </ul>
 <h2 id="fixed-output-derivation-without-dependency">Fixed-Output Derivation without Dependency</h2>
 <p>我们先来看一个最简单的<code>derivation</code>定义:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode nix"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">derivation</span> {</span>
-<span id="cb1-2"><a href="#cb1-2"></a>    <span class="ex">name</span> = <span class="st">&quot;busybox&quot;</span><span class="kw">;</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>    <span class="ex">builder</span> = <span class="st">&quot;builtin:fetchurl&quot;</span><span class="kw">;</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>    <span class="ex">system</span> = <span class="st">&quot;x86_64-linux&quot;</span><span class="kw">;</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>    <span class="ex">outputHash</span> = <span class="st">&quot;ef4c1be6c7ae57e4f654efd90ae2d2e204d6769364c46469fa9ff3761195cba1&quot;</span><span class="kw">;</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>    <span class="ex">outputHashAlgo</span> = <span class="st">&quot;sha256&quot;</span><span class="kw">;</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>    <span class="ex">outputHashMode</span> = <span class="st">&quot;recursive&quot;</span><span class="kw">;</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>    <span class="ex">url</span> = <span class="st">&quot;http://tarballs.nixos.org/stdenv-linux/i686/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/busybox&quot;</span><span class="kw">;</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>    <span class="ex">executable</span> = true<span class="kw">;</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>    <span class="ex">unpack</span> = false<span class="kw">;</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>}</span></code></pre></div>
+<pre class="nixos"><code>derivation {
+    name = &quot;busybox&quot;;
+    builder = &quot;builtin:fetchurl&quot;;
+    system = &quot;x86_64-linux&quot;;
+    outputHash = &quot;ef4c1be6c7ae57e4f654efd90ae2d2e204d6769364c46469fa9ff3761195cba1&quot;;
+    outputHashAlgo = &quot;sha256&quot;;
+    outputHashMode = &quot;recursive&quot;;
+    url = &quot;http://tarballs.nixos.org/stdenv-linux/i686/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/busybox&quot;;
+    executable = true;
+    unpack = false;
+}</code></pre>
 <p>上述代码定义了一个名叫“busybox”的<code>derivation</code>, 其对应package构建过程所使用的builder是nix-lang内置的<code>fetchurl</code>函数, 且只能在x86_64架构的linux系统上执行. 因为我们给出了<code>ouputHash</code>等参数, 因此最后得到的package文件的Hash值已经被确定.</p>
 <p>如果你正在使用NixOS <del>(那应该就不会来读这篇文档)</del> 或者已经在系统上安装了Nix <del>(如果没有请立即在shell中输入<code>curl -L https://nixos.org/nix/install | sh</code>并回车)</del> , 试着将上述代码输入到文件<code>busybox.nix</code>中然后执行:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a>$ <span class="ex">nix-build</span> busybox.nix</span></code></pre></div>
+<pre class="console"><code>$ nix-build busybox.nix</code></pre>
 <p>那么Nix应该会提示它要开始build一些东西了, 视你的网络情况而定, 等待一段时间后应该会得到如下输出:</p>
 <blockquote>
 <p>/nix/store/lan2w3ab1mvpxj3ppiw2sizh8i7rpz7s-busybox</p>
 </blockquote>
 <p>同时当前目录下会出现一个名为<code>result</code>的符号链接指向上面的路径.</p>
 <p>试着执行一下:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a>$ <span class="ex">/nix/store/lan2w3ab1mvpxj3ppiw2sizh8i7rpz7s-busybox</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="ex">BusyBox</span> v1.23.2 () <span class="ex">multi-call</span> binary.</span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="ex">BusyBox</span> is copyrighted by many authors between 1998-2012.</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="ex">Licensed</span> under GPLv2. See source distribution for detailed</span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="ex">copyright</span> notices.</span>
-<span id="cb3-7"><a href="#cb3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="ex">Usage</span>: busybox [function [arguments]...]</span>
-<span id="cb3-9"><a href="#cb3-9"></a>   <span class="ex">or</span>: busybox --list</span>
-<span id="cb3-10"><a href="#cb3-10"></a>   <span class="ex">or</span>: function [arguments]...</span>
-<span id="cb3-11"><a href="#cb3-11"></a></span>
-<span id="cb3-12"><a href="#cb3-12"></a>	<span class="ex">BusyBox</span> is a multi-call binary that combines many common Unix</span>
-<span id="cb3-13"><a href="#cb3-13"></a>	<span class="ex">utilities</span> into a single executable.  Most people will create a</span>
-<span id="cb3-14"><a href="#cb3-14"></a>	<span class="fu">link</span> to busybox for each function they wish to use and BusyBox</span>
-<span id="cb3-15"><a href="#cb3-15"></a>	<span class="ex">will</span> act like whatever it was invoked as.</span>
-<span id="cb3-16"><a href="#cb3-16"></a></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="ex">Currently</span> defined functions:</span>
-<span id="cb3-18"><a href="#cb3-18"></a>	<span class="ex">ash</span>, mkdir, tar, unxz, xzcat</span></code></pre></div>
+<pre class="console"><code>$ /nix/store/lan2w3ab1mvpxj3ppiw2sizh8i7rpz7s-busybox
+
+BusyBox v1.23.2 () multi-call binary.
+BusyBox is copyrighted by many authors between 1998-2012.
+Licensed under GPLv2. See source distribution for detailed
+copyright notices.
+
+Usage: busybox [function [arguments]...]
+   or: busybox --list
+   or: function [arguments]...
+
+	BusyBox is a multi-call binary that combines many common Unix
+	utilities into a single executable.  Most people will create a
+	link to busybox for each function they wish to use and BusyBox
+	will act like whatever it was invoked as.
+
+Currently defined functions:
+	ash, mkdir, tar, unxz, xzcat</code></pre>
 <p>成了, 我们的第一个package构建成功.</p>
 <p>我来解释一下当我们执行<code>nix-build</code>时发生了什么:</p>
 <p>首先, <code>busybox.nix</code>的内容被读取并执行, 并返回了一个<code>derivation</code>. 之后<code>nix-build</code>命令会对这个<code>derivation</code>进行求值, 即构建相应的package. 而构建package的进程会执行以下操作(按Linux上的默认设置描述):</p>
@@ -445,31 +475,31 @@ url=&quot;http://tarballs.nixos.org/stdenv-linux/i686/4907fc9e8d0d82b28b3c56e3a4
 <p>这里并没有描述所有的细节, 仅仅摘录了其中比较重要的步骤. 可以看到, Nix使用了多种方法, 尽量使得<code>derivation</code>的构建进程的运行环境不受系统环境的影响, 因而在不同的机器上执行都能得到相同的结果, 也就是实现所谓的<a href="https://reproducible-builds.org/">Reproducible Build</a>, 从而使得<code>derivation</code>的求值过程符合纯函数式的定义.</p>
 <h2 id="normal-derivation-with-some-dependency">Normal Derivation with Some Dependency</h2>
 <p>上一节的例子中不存在对其他<code>derivation</code>的依赖, 接下来我们看一个稍微复杂一点的例子:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode nix"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="bu">let</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="ex">busybox</span> = derivation {</span>
-<span id="cb5-3"><a href="#cb5-3"></a>    <span class="ex">name</span> = <span class="st">&quot;busybox&quot;</span><span class="kw">;</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>    <span class="ex">builder</span> = <span class="st">&quot;builtin:fetchurl&quot;</span><span class="kw">;</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="ex">system</span> = <span class="st">&quot;x86_64-linux&quot;</span><span class="kw">;</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>    <span class="ex">outputHash</span> = <span class="st">&quot;ef4c1be6c7ae57e4f654efd90ae2d2e204d6769364c46469fa9ff3761195cba1&quot;</span><span class="kw">;</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>    <span class="ex">outputHashAlgo</span> = <span class="st">&quot;sha256&quot;</span><span class="kw">;</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a>    <span class="ex">outputHashMode</span> = <span class="st">&quot;recursive&quot;</span><span class="kw">;</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>    <span class="ex">url</span> = <span class="st">&quot;http://tarballs.nixos.org/stdenv-linux/i686/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/busybox&quot;</span><span class="kw">;</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>    <span class="ex">executable</span> = true<span class="kw">;</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a>    <span class="ex">unpack</span> = false<span class="kw">;</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>  };</span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="kw">in</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>  <span class="ex">derivation</span> {</span>
-<span id="cb5-15"><a href="#cb5-15"></a>    <span class="ex">name</span> = <span class="st">&quot;hello-world&quot;</span><span class="kw">;</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a>    <span class="ex">builder</span> = <span class="st">&quot;</span><span class="va">${busybox}</span><span class="st">&quot;</span><span class="kw">;</span></span>
-<span id="cb5-17"><a href="#cb5-17"></a>    <span class="ex">args</span> = [ <span class="st">&quot;ash&quot;</span> <span class="st">&quot;-c&quot;</span> <span class="st">&quot;echo Hello World! &gt; </span><span class="va">$out</span><span class="st">&quot;</span> ]<span class="kw">;</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a>    <span class="ex">system</span> = <span class="st">&quot;x86_64-linux&quot;</span><span class="kw">;</span></span>
-<span id="cb5-19"><a href="#cb5-19"></a>  }</span></code></pre></div>
+<pre class="nixos"><code>let
+  busybox = derivation {
+    name = &quot;busybox&quot;;
+    builder = &quot;builtin:fetchurl&quot;;
+    system = &quot;x86_64-linux&quot;;
+    outputHash = &quot;ef4c1be6c7ae57e4f654efd90ae2d2e204d6769364c46469fa9ff3761195cba1&quot;;
+    outputHashAlgo = &quot;sha256&quot;;
+    outputHashMode = &quot;recursive&quot;;
+    url = &quot;http://tarballs.nixos.org/stdenv-linux/i686/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/busybox&quot;;
+    executable = true;
+    unpack = false;
+  };
+in
+  derivation {
+    name = &quot;hello-world&quot;;
+    builder = &quot;${busybox}&quot;;
+    args = [ &quot;ash&quot; &quot;-c&quot; &quot;echo Hello World! &gt; $out&quot; ];
+    system = &quot;x86_64-linux&quot;;
+  }</code></pre>
 <p>将以上内容写入<code>hello.nix</code>, 执行一下<code>nix-build</code>看看会发生什么:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a>$ <span class="ex">nix-build</span> hello.nix</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">/nix/store/w62gjxd3xj487mv7dgzypgcl32na5daw-hello-world</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a>$ <span class="fu">cat</span> ./result</span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="ex">Hello</span> World!</span></code></pre></div>
+<pre class="console"><code>$ nix-build hello.nix
+/nix/store/w62gjxd3xj487mv7dgzypgcl32na5daw-hello-world
+
+$ cat ./result
+Hello World!</code></pre>
 <p>经典的Hello World! 简单讲解一下这个例子中的代码:</p>
 <p><code>let ... in</code>这段将变量<code>busybox</code>引入到作用域内, 它的值就是我们上一个小节定义的<code>derivation</code>.</p>
 <p>接下来我们定义了一个名叫“hello-world”的<code>derivation</code>, 它的builder是<code>"${busybox}"</code>.</p>

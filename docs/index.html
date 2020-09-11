@@ -12,7 +12,7 @@
 html
 {
   font-size        : 100%;
-  font-family      : "Menlo","Monaco","Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono","Courier New", monospace,serif;
+  font-family      : monospace,serif;
   min-height       : 100%;
   max-width        : 100%;
   background-color : #282828;
@@ -56,7 +56,7 @@ header > h1
   display   : inline-block;
   display   : table-cell;
   color     : #458588;
-  font-size : 1.19999rem;
+  font-size : 1.39999rem;
   padding   : 1.5rem 0rem 2rem 0rem;
   overflow  : hidden;
 }
@@ -94,7 +94,7 @@ h5,
 h6
 {
   line-height   : 1.3em;
-  font-size     : 1.1rem;
+  font-size     : 1.3rem;
   color         : #98971a;
   position      : relative;
   margin-bottom : 0.75rem;
@@ -134,6 +134,36 @@ h6::before
 {
   display : inline;
   content : "###### ";
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h1
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h2
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h3
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h4
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h5
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h6
+{
+  padding-top : 0.75rem;
 }
 
 li
@@ -233,7 +263,7 @@ strong::before
 :not(pre) > code
 {
   color       : #689d6a;
-  font-family : "Menlo","Monaco","Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono","Courier New", monospace,serif;
+  font-family : monospace,serif;
 }
 
 :not(pre) > code::after,
@@ -282,5 +312,6 @@ footer
 
 }
 
-/* Generated with Clay, http://fvisser.nl/clay */</style></head><body><div class="container"><div class="inner"><a href="index.html">Home</a> - <a href="posts.html">Posts</a><header><h1>Parseltongue Speech</h1></header><h1>About Here</h1><p>放点瞎写的文档，可能会有一些值得读的东西(=・ω・=)</p><h1>About Me</h1><p>学生，喜折腾，最近感兴趣的主题有NixOS、Haskell、Java</p><h1>Links</h1><ul><li><a href="https://github.com/Ninlives">Github</a></li></ul><h1>Recent Posts</h1><div><ul><li class="pages">2020-06-12 -&gt; <a href="article/2020-06-12-nix-things.html">关于Nix的一些事
+/* Generated with Clay, http://fvisser.nl/clay */</style><link href="./static/gruvbox-highlight.css" rel="stylesheet"><script src="./static/highlight.min.js"></script><script src="./static/nix.min.js"></script><script src="./static/shell.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><div class="container"><div class="inner"><a href="index.html">Home</a> - <a href="posts.html">Posts</a><header><h1>Parseltongue Speech</h1></header><h1>About Here</h1><p>放点瞎写的文档，可能会有一些值得读的东西(=・ω・=)</p><h1>About Me</h1><p>学生，喜折腾，最近感兴趣的主题有NixOS、Haskell、Java</p><h1>Links</h1><ul><li><a href="https://github.com/Ninlives">Github</a></li></ul><h1>Recent Posts</h1><div><ul><li class="pages">2020-09-10 -&gt; <a href="article/2020-09-10-nix-hidden-things.html">被遗忘者(又名: 没人写文档的Nix内置函数)
+</a></li><li class="pages">2020-06-12 -&gt; <a href="article/2020-06-12-nix-things.html">关于Nix的一些事
 </a></li></ul></div></div><footer>EOF</footer></div></body></html>

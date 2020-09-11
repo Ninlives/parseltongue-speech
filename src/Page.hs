@@ -27,6 +27,7 @@ import qualified Rib.Parser.Pandoc as Pandoc
 -- The `a` parameter specifies the data (typically Markdown document) used to
 -- generate the final page text.
 data Route a where
+  Route_root :: Route ()
   Route_Index :: Route [(Day, Route Pandoc, Pandoc)]
   Route_Posts :: Route [(Day, Route Pandoc, Pandoc)]
   Route_Article :: FilePath -> Route Pandoc
@@ -35,6 +36,8 @@ data Route a where
 -- each route. This affects what `routeUrl` will return.
 instance IsRoute Route where
   routeFile = \case
+    Route_root ->
+      pure "."
     Route_Index ->
       pure "index.html"
     Route_Posts ->
@@ -51,6 +54,11 @@ renderPage route val = html_ [lang_ "en"] $ do
         meta_ [name_ "viewport", content_ "width=device-width, initial-scale=1"]
         title_ routeTitle
         style_ [type_ "text/css"] $ C.render pageStyle
+        link_ [rel_ "stylesheet", href_ $ append (Route_root `relativeTo` route) "/static/gruvbox-highlight.css"]
+        script_ [src_ $ append (Route_root `relativeTo` route) "/static/highlight.min.js"] (""::Text)
+        script_ [src_ $ append (Route_root `relativeTo` route) "/static/nix.min.js"] (""::Text)
+        script_ [src_ $ append (Route_root `relativeTo` route) "/static/shell.min.js"] (""::Text)
+        script_ "hljs.initHighlightingOnLoad();"
     body_ $ do
         div_ [class_ "container"] $ do
             div_ [class_ "inner"] $ do

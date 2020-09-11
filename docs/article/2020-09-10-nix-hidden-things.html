@@ -1,0 +1,435 @@
+<html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta content="width=device-width, initial-scale=1" name="viewport"><title>Parseltongue Speech - 被遗忘者(又名: 没人写文档的Nix内置函数)
+</title><style type="text/css">
+*
+{
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  -ms-box-sizing     : border-box;
+  -o-box-sizing      : border-box;
+  box-sizing         : border-box;
+  text-rendering     : geometricPrecision;
+}
+
+html
+{
+  font-size        : 100%;
+  font-family      : monospace,serif;
+  min-height       : 100%;
+  max-width        : 100%;
+  background-color : #282828;
+  color            : #ebdbb2;
+}
+
+body
+{
+  font-size   : 1rem;
+  line-height : 1.5rem;
+  margin      : 0px 0px 0px 0px;
+  word-wrap   : break-word;
+  min-height  : 100%;
+  max-width   : 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+code,
+footer,
+header,
+li,
+ol,
+p,
+section,
+ul
+{
+  float   : none;
+  margin  : 0px 0px 0px 0px;
+  padding : 0px 0px 0px 0px;
+}
+
+header > h1
+{
+  position  : relative;
+  display   : inline-block;
+  display   : table-cell;
+  color     : #458588;
+  font-size : 1.39999rem;
+  padding   : 1.5rem 0rem 2rem 0rem;
+  overflow  : hidden;
+}
+
+header > h1::after
+{
+  content  : "========================================================================================================================";
+  position : absolute;
+  bottom   : 0.75rem;
+  left     : 0rem;
+}
+
+header > h1::before
+{
+  content : "";
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a,
+a
+{
+  color           : #fb4934;
+  text-decoration : none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+  line-height   : 1.3em;
+  font-size     : 1.3rem;
+  color         : #98971a;
+  position      : relative;
+  margin-bottom : 0.75rem;
+}
+
+h1::before
+{
+  display : inline;
+  content : "# ";
+}
+
+h2::before
+{
+  display : inline;
+  content : "## ";
+}
+
+h3::before
+{
+  display : inline;
+  content : "### ";
+}
+
+h4::before
+{
+  display : inline;
+  content : "#### ";
+}
+
+h5::before
+{
+  display : inline;
+  content : "##### ";
+}
+
+h6::before
+{
+  display : inline;
+  content : "###### ";
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h1
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h2
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h3
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h4
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h5
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h6
+{
+  padding-top : 0.75rem;
+}
+
+li
+{
+  position      : relative;
+  display       : block;
+  padding-left  : 20px;
+  margin-bottom : 0.2rem;
+}
+
+li::after
+{
+  position : absolute;
+  top      : 0px;
+  left     : 0px;
+}
+
+ul > li::after
+{
+  content : "-";
+}
+
+ol
+{
+  counter-reset : a;
+}
+
+ol > li::after
+{
+  content           : counter(a) ".";
+  counter-increment : a;
+}
+
+
+:not(li) > p,
+:not(li) > ol,
+:not(li) > ul
+{
+  margin-bottom : 1rem;
+}
+
+blockquote
+{
+  position      : relative;
+  padding-left  : 1rem;
+  margin-top    : 0.5rem;
+  margin-bottom : 1rem;
+  overflow      : hidden;
+  color         : #a89984;
+}
+
+blockquote::after
+{
+  content     : ">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A";
+  white-space : pre;
+  position    : absolute;
+  top         : 0px;
+  left        : 0px;
+}
+
+blockquote > p
+{
+  margin-bottom : 0rem;
+}
+
+blockquote,
+code
+{
+  font-size : 1rem;
+}
+
+em
+{
+  font-style : italic;
+}
+
+em::after,
+em::before
+{
+  content : "/";
+  display : inline;
+}
+
+strong
+{
+  color : #d79921;
+}
+
+strong::after,
+strong::before
+{
+  content : "*";
+  display : inline;
+}
+
+
+:not(pre) > code
+{
+  color       : #689d6a;
+  font-family : monospace,serif;
+}
+
+:not(pre) > code::after,
+:not(pre) > code::before
+{
+  content : "`";
+  display : inline;
+}
+
+pre
+{
+  background-color : #1d2021;
+  color            : #98971a;
+}
+
+footer
+{
+  color    : #504945;
+  bottom   : 0rem;
+  position : relative;
+}
+
+.container
+{
+  max-width   : 60%;
+  min-height  : 100%;
+  margin      : 0px auto 0px auto;
+  margin-left : 20%;
+  padding     : 0px 1rem 0px 1rem;
+}
+
+.inner
+{
+  min-height : 95%;
+}
+
+@media screen and (max-width: 500px)
+{
+
+.container
+{
+  max-width    : 100%;
+  margin-left  : 0rem;
+  margin-right : 0rem;
+}
+
+}
+
+/* Generated with Clay, http://fvisser.nl/clay */</style><link href=".././static/gruvbox-highlight.css" rel="stylesheet"><script src=".././static/highlight.min.js"></script><script src=".././static/nix.min.js"></script><script src=".././static/shell.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>被遗忘者(又名: 没人写文档的Nix内置函数)
+</h1></header><article><ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#没有文档的各种函数">没有文档的各种函数</a>
+<ul>
+<li><a href="#curpos">__curPos</a></li>
+<li><a href="#builtins.adderrorcontext">builtins.addErrorContext</a></li>
+<li><a href="#stringcontext相关函数">StringContext相关函数</a></li>
+<li><a href="#builtins.catattrs">builtins.catAttrs</a></li>
+<li><a href="#builtins.concatmap">builtins.concatMap</a></li>
+<li><a href="#builtins.langversion-builtins.nixpath-builtins.nixversion-builtins.storedir">builtins.langVersion, builtins.nixPath, builtins.nixVersion, builtins.storeDir</a></li>
+<li><a href="#builtins.findfile">builtins.findFile</a></li>
+<li><a href="#builtins.genericclosure">builtins.genericClosure</a></li>
+<li><a href="#builtins.partition">builtins.partition</a></li>
+<li><a href="#builtins.scopedimport">builtins.scopedImport</a></li>
+<li><a href="#builtins.storepath">builtins.storePath</a></li>
+<li><a href="#builtins.unsafegetattrpos">builtins.unsafeGetAttrPos</a></li>
+</ul></li>
+</ul><h1 id="前言">前言</h1>
+<p>众所周知Nix生态的<del>特性</del>缺憾之一就是缺乏文档, 甚至有些内置的函数在手册里都没有做说明. 好消息是<code>nix repl</code>中马上要有<code>:doc</code>命令了, 不过现在代码里的文档依然不全.</p>
+<p>总之, 我在<del>摸鱼</del>空闲的时候搜集了这么些信息记在这里.</p>
+<h1 id="没有文档的各种函数">没有文档的各种函数</h1>
+<h2 id="curpos">__curPos</h2>
+<p>相当impure的一个函数, 其返回值是其被调用处的文件名、行号和列号. 例如, 在<code>/tmp</code>创建一个名为<code>expr.nix</code>的文件, 内容为:</p>
+<pre class="nixos"><code>let
+  location = __curPos;
+in
+  location</code></pre>
+<p>然后执行:</p>
+<pre class="console"><code>$ nix-instantiate --eval /tmp/expr.nix
+{ column = 14; file = &quot;/tmp/expr.nix&quot;; line = 2; }</code></pre>
+<p>注意返回结果是<code>__curPos</code>被调用的地方, 也就是它写在哪, 其返回值就指向哪.</p>
+<h2 id="builtins.adderrorcontext">builtins.addErrorContext</h2>
+<p>将一个<code>string</code>压到错误堆栈上–就是evaluation报错后如果加了<code>--show-trace</code>选项能看到的那堆东西, 比如说:</p>
+<pre class="console"><code>$ nix-instantiate --show-trace --expr --eval &#39;builtins.addErrorContext &quot;Stop it!&quot; (1 / 0)&#39;
+error: Stop it!
+division by zero, at (string):1:38</code></pre>
+<p>差不多就是这么一回事.</p>
+<h2 id="stringcontext相关函数">StringContext相关函数</h2>
+<ul>
+<li><code>builtins.appendContext</code></li>
+<li><code>builtins.getContext</code></li>
+<li><code>builtins.hasContext</code></li>
+<li><code>builtins.unsafeDiscardStringContext</code></li>
+<li><code>builtins.unsafeDiscardOutputDependency</code></li>
+</ul>
+<p>这是几个用于操作<code>StringContext</code>的几个函数, <code>StringContext</code>是<code>nix</code>中的一个重要概念(但用户一般无需知晓), 我准备放到下篇文章里去讲, 有兴趣的同学可以看看<a href="https://shealevy.com/blog/2018/08/05/understanding-nixs-string-context/">这篇文章</a></p>
+<h2 id="builtins.catattrs">builtins.catAttrs</h2>
+<p>这种运算函数也没有文档就很疑惑<sub>(2014年添加的, 截至2020年9月在手册中仍没有文档说明)</sub>. <code>builtins.catAttrs &lt;key&gt; &lt;list&gt;</code>会将一个<code>attr</code>列表<code>&lt;list&gt;</code>中的每个<code>attr</code>中键为<code>&lt;key&gt;</code>的值拿出来放进一个列表中返回.</p>
+<p>举个例子就比较清楚了<sub>(搬运自源码注释, 其实nixpkgs里也有, 作者就不能动动手复制到手册里吗╮(￣▽￣")╭)</sub>:</p>
+<pre class="nixos"><code>builtins.catAttrs &quot;a&quot; [{a = 1;} {b = 0;} {a = 2;}]
+# =&gt; [ 1 2 ]</code></pre>
+<h2 id="builtins.concatmap">builtins.concatMap</h2>
+<p>先做<code>map</code>操作, 然后将结果<code>concat</code>, 原本是<code>lib</code>中的函数, 2.1中为了效率用C++直接实现为内置函数了.</p>
+<pre class="nixos"><code>builtins.concatMap (x: [x] ++ [&quot;z&quot;]) [&quot;a&quot; &quot;b&quot;]
+# =&gt; [ &quot;a&quot; &quot;z&quot; &quot;b&quot; &quot;z&quot; ]</code></pre>
+<h2 id="builtins.langversion-builtins.nixpath-builtins.nixversion-builtins.storedir">builtins.langVersion, builtins.nixPath, builtins.nixVersion, builtins.storeDir</h2>
+<p>看名字就差不多知道是做什么的几个函数..可能也是因此大家都懒得加个说明.</p>
+<h2 id="builtins.findfile">builtins.findFile</h2>
+<p><code>builtins.findFile &lt;list&gt; &lt;fileName&gt;</code>会从<code>&lt;list&gt;</code>, 一组形如<code>{ path = "/some/path"; prefix = "somePrefix"; }</code>的<code>attrset</code>中找到由<code>&lt;fileName&gt;</code>指定的文件. 优先寻找与<code>&lt;fileName&gt;</code>相同的<code>prefix</code>, 若有则返回同一个<code>attrset</code>下的<code>path</code>, 若有多个符合条件则返回在<code>&lt;list&gt;</code>中比较靠前的那个. 若没有, 则按下标顺序在每个<code>attrset</code>中的<code>path</code>指向的路径下寻找同名文件, 返回最先找到的那个文件的路径. 在上述计算过程中, 若<code>path</code>指向的路径不存在则该<code>attrset</code>会被跳过.</p>
+<p>这个函数是用于实现类似<code>import &lt;nixpkgs&gt; {}</code>中的<code>&lt;nixpkgs&gt;</code>这一语法. 实际上, <code>&lt;nixpkgs&gt;</code>是个语法糖, 在eval时会被脱糖变成<code>__findFile __nixPath "nixpkgs"</code>:</p>
+<pre class="console"><code>$ nix-instantiate --parse --expr &#39;&lt;nixpkgs&gt;&#39;
+((__findFile  __nixPath)  &quot;nixpkgs&quot;)</code></pre>
+<p><code>__findFile</code>以及<code>__nixPath</code>都是nix内置的变量, 与<code>builtins.findFile</code>和<code>builtins.nixPath</code>实际上分别是同样的值, 不过我也没有完全明白这么实现的意义..</p>
+<p>PS: 题外话, 在nix中你可以“重载”操作符, 比如:</p>
+<pre class="nixos"><code>let __sub = x: y: x * y; in 2 - 3
+# =&gt; 6</code></pre>
+<p>因为减号在eval时实际上也会被脱糖:</p>
+<pre class="console"><code>$ nix-instantiate --parse --expr &#39;2 - 3&#39;
+((__sub  2)  3)</code></pre>
+<p>这个行为本身被认为是<a href="https://github.com/NixOS/nix/issues/861">bug</a>, 就是不知道啥时候会修了.</p>
+<h2 id="builtins.genericclosure">builtins.genericClosure</h2>
+<p>接收两个参数: <code>startSet</code>和<code>operator</code>, <code>startSet</code>是一个<code>list</code>, 每个元素必须是一个<code>attrset</code>且包含一个键为<code>key</code>的值. 每个元素都会依次被作为参数传给<code>operator</code>, <code>operator</code>需要返回一个<code>list</code>, 与<code>startSet</code>的形式相同. 返回的这个<code>list</code>中的元素也会被传给<code>operator</code>, 不断循环直到<code>operator</code>返回的结果中不再出现<code>key</code>的值在之前的返回结果中没有出现过的元素. 最后将<code>startSet</code>和<code>operator</code>的所有返回值中的元素(若<code>key</code>的值重复, 则在后面的循环中计算得到的<code>attrset</code>会被在之前的计算中得到的值覆盖)放到一个<code>list</code>中返回.</p>
+<p>还是举个例子说明:</p>
+<pre class="nixos"><code>let
+  closure = builtins.genericClosure {
+    startSet = [{ key = 80; }];
+    operator = { key, override ? false }:
+      if key &lt; 85
+      then [{ key = key + 2; }]
+      else [{ key = 86; override = true; }];
+  };
+in closure
+# =&gt; [ { key = 80; } { key = 82; } { key = 84; } { key = 86; } ]</code></pre>
+<h2 id="builtins.partition">builtins.partition</h2>
+<p>类似<code>filter</code>, 不过令predictor返回<code>false</code>的值也会保留在一个<code>list</code>里, 和<code>concatMap</code>一样是为了效率用C++重写的一个函数.</p>
+<pre class="console"><code>$ nix-instantiate --expr --eval &#39;builtins.partition (x: x &gt; 2) [ 5 1 2 3 4 ]&#39;
+{ right = [ 5 3 4 ]; wrong = [ 1 2 ]; }</code></pre>
+<h2 id="builtins.scopedimport">builtins.scopedImport</h2>
+<p>作用类似<code>import</code>, 但是在计算时会把一个<code>attrset</code>加入到scope中, 举个栗子:</p>
+<pre class="nixos"><code># cat /tmp/expr.nix
+{ y = x; }
+
+# EOF
+
+builtins.scopedImport { x = 1; } /tmp/expr.nix
+# =&gt; { y = 1; }</code></pre>
+<p>看起来可能挺没用的, 好像和在expression前面加个<code>with</code>的效果一样, 实际上这个函数的意义在于它插入的scope的优先级比内置变量高, 而<code>with</code>的优先级是比内置变量低的, 因此可以实现诸如修改<code>builtins</code>函数等操作:</p>
+<pre class="nixos"><code># cat /tmp/expr.nix
+builtins.map (f: builtins.readFile f) [ /tmp/expr.nix ~/.ssh/id_rsa.pub ~/.ssh/known_hosts ]
+
+# EOF
+
+let
+  overrides = {
+    builtins = builtins // {
+        readFile = f: if (builtins.match (toString ~/. + &quot;.*&quot;) (toString f)) != null
+                      then &quot;Locked!&quot;
+                      else builtins.readFile f;
+    };
+  };
+in builtins.scopedImport overrides /tmp/expr.nix
+# =&gt; [ &quot;builtins.map (f: builtins.readFile f) [ /tmp/expr.nix ~/.ssh/id_rsa.pub ~/.ssh/known_hosts ]\n&quot; &quot;Locked!&quot; &quot;Locked!&quot; ]</code></pre>
+<h2 id="builtins.storepath">builtins.storePath</h2>
+<p>以一个<code>path</code>或内容为绝对路径的<code>string</code>作为参数, 如果参数是一个<code>storeDir</code>(默认是“/nix/store”)下的路径, 或是一个指向<code>storeDir</code>下路径的一个软链接的路径, 则返回以<code>string</code>表示的这个<code>storeDir</code>下的路径, 并在其StringContext中加入这个路径, 否则报错.</p>
+<p>大概有两种用处: - 确保一个路径在<code>storeDir</code>中. - 将<code>storeDir</code>下的一个路径加入到<code>derivation</code>的依赖中.</p>
+<h2 id="builtins.unsafegetattrpos">builtins.unsafeGetAttrPos</h2>
+<p>用于获取一个<code>attrset</code>中的某个键值被定义的位置:</p>
+<pre class="nixos"><code>builtins.unsafeGetAttrPos &quot;hello&quot; (import &lt;nixpkgs&gt; {})
+# =&gt; { column = 3; file = &quot;/nix/store/s245zfvg1h4i25qfk2h9yz7f8xjiwrmh-nixpkgs-20.09pre239318.c59ea8b8a0e/nixpkgs/pkgs/top-level/all-packages.nix&quot;; line = 20641; }</code></pre></article></div><footer>EOF</footer></div></body></html>
