@@ -54,11 +54,8 @@ renderPage route val = html_ [lang_ "en"] $ do
         meta_ [name_ "viewport", content_ "width=device-width, initial-scale=1"]
         title_ routeTitle
         style_ [type_ "text/css"] $ C.render pageStyle
-        link_ [rel_ "stylesheet", href_ $ append (Route_root `relativeTo` route) "/static/gruvbox-highlight.css"]
-        script_ [src_ $ append (Route_root `relativeTo` route) "/static/highlight.min.js"] (""::Text)
-        script_ [src_ $ append (Route_root `relativeTo` route) "/static/nix.min.js"] (""::Text)
-        script_ [src_ $ append (Route_root `relativeTo` route) "/static/shell.min.js"] (""::Text)
-        script_ "hljs.initHighlightingOnLoad();"
+        link_ [rel_ "stylesheet", href_ $ append (Route_root `relativeTo` route) "/static/style.css"]
+        script_ [src_ $ append (Route_root `relativeTo` route) "/static/script.js"] (""::Text)
     body_ $ do
         div_ [class_ "container"] $ do
             div_ [class_ "inner"] $ do

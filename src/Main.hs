@@ -32,8 +32,6 @@ main = withUtf8 $ do
 -- | Shake action for generating the static site
 generateSite :: Action ()
 generateSite = do
-  -- Copy over the static files
-    Rib.buildStaticFiles ["static/**"]
     let writeHtmlRoute :: Route a -> a -> Action ()
         writeHtmlRoute r = Rib.writeRoute r . Lucid.renderText . renderPage r
     -- Build individual sources, generating .html for each.

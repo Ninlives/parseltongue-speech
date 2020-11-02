@@ -313,7 +313,7 @@ footer
 
 }
 
-/* Generated with Clay, http://fvisser.nl/clay */</style><link href=".././static/gruvbox-highlight.css" rel="stylesheet"><script src=".././static/highlight.min.js"></script><script src=".././static/nix.min.js"></script><script src=".././static/shell.min.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>被遗忘者(又名: 没人写文档的Nix内置函数)
+/* Generated with Clay, http://fvisser.nl/clay */</style><link href=".././static/style.css" rel="stylesheet"><script src=".././static/script.js"></script></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>被遗忘者(又名: 没人写文档的Nix内置函数)
 </h1></header><article><ul>
 <li><a href="#前言">前言</a></li>
 <li><a href="#没有文档的各种函数">没有文档的各种函数</a>
@@ -428,7 +428,11 @@ in builtins.scopedImport overrides /tmp/expr.nix
 # =&gt; [ &quot;builtins.map (f: builtins.readFile f) [ /tmp/expr.nix ~/.ssh/id_rsa.pub ~/.ssh/known_hosts ]\n&quot; &quot;Locked!&quot; &quot;Locked!&quot; ]</code></pre>
 <h2 id="builtins.storepath">builtins.storePath</h2>
 <p>以一个<code>path</code>或内容为绝对路径的<code>string</code>作为参数, 如果参数是一个<code>storeDir</code>(默认是“/nix/store”)下的路径, 或是一个指向<code>storeDir</code>下路径的一个软链接的路径, 则返回以<code>string</code>表示的这个<code>storeDir</code>下的路径, 并在其StringContext中加入这个路径, 否则报错.</p>
-<p>大概有两种用处: - 确保一个路径在<code>storeDir</code>中. - 将<code>storeDir</code>下的一个路径加入到<code>derivation</code>的依赖中.</p>
+<p>大概有两种用处:</p>
+<ul>
+<li>确保一个路径在<code>storeDir</code>中.</li>
+<li>将<code>storeDir</code>下的一个路径加入到<code>derivation</code>的依赖中.</li>
+</ul>
 <h2 id="builtins.unsafegetattrpos">builtins.unsafeGetAttrPos</h2>
 <p>用于获取一个<code>attrset</code>中的某个键值被定义的位置:</p>
 <pre class="nixos"><code>builtins.unsafeGetAttrPos &quot;hello&quot; (import &lt;nixpkgs&gt; {})

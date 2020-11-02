@@ -176,6 +176,7 @@ in builtins.scopedImport overrides /tmp/expr.nix
 以一个`path`或内容为绝对路径的`string`作为参数, 如果参数是一个`storeDir`(默认是"/nix/store")下的路径, 或是一个指向`storeDir`下路径的一个软链接的路径, 则返回以`string`表示的这个`storeDir`下的路径, 并在其StringContext中加入这个路径, 否则报错.
 
 大概有两种用处:
+
 - 确保一个路径在`storeDir`中.
 - 将`storeDir`下的一个路径加入到`derivation`的依赖中.
 
