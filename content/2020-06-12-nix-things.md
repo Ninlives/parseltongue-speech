@@ -61,23 +61,22 @@ Nix是Linux上的又一个包管理器. 在[官网](https://nixos.org)的介绍�
 
 先简单介绍一下Nix的核心部分: Nix语言. 这是Nix使用的配置语言, 由于名字也叫Nix, 为了避免混淆下面都用nix-lang指代这个语言.
 
-nix-lang是一种"伪纯函数式"编程语言 -- 为了实用性nix-lang默认允许在运行中读取环境变量以及任意位置的文件, 但也提供了"pure eval mode"关闭这两项能力, 同时nix-lang在对`derivation`的求值过程中将不可避免地涉及网络IO, 但在nix-lang中可以通过 *Fixed Output* 的约束将其影响降到最低. 除此之外的部分均符合纯函数式语言的定义(当然, 纯函数式编程的定义是有争议的, 这里仅讨论上一小节提到的三个特征).
+nix-lang是一种"伪纯函数式"编程语言 -- 为了实用性nix-lang默认允许在运行中读取环境变量以及任意位置的文件, 或是从任意url下载文件, 但也提供了"pure eval mode"关闭这些能力, 同时nix-lang在对`derivation`的求值过程中将不可避免地涉及网络IO, 但在nix-lang中可以通过 *Fixed Output* 的约束将其影响降到最低. 除此之外的部分均符合纯函数式语言的定义(当然, 纯函数式编程的定义是有争议的, 这里仅讨论上一小节提到的三个特征).
 
-虽然是设计为用于包管理器的DSL, 但nix-lang本身是图灵完全的, 提供了常见的基本数据类型、Lamba表达式、惰性求值等特性.
+虽然是设计为用于包管理器的DSL, 但nix-lang本身是接近图灵完全的(nix会尝试检测无限递归并中断计算), 提供了常见的基本数据类型、Lamba表达式、惰性求值等特性.
 
 [nixpkgs](https://github.com/NixOS/nixpkgs)是官方维护的一份巨大的nix-lang library,
 可以类比为Arch Linux的[Package Repository](https://www.archlinux.org/packages).
 
-如上一小节所说, nix-lang中提供了名为`derivation`的数据类型来表示一个package, 并提供了若干内置的构造函数. 在这里我将`derivation`分成三类:
+如上一小节所说, nix-lang中提供了名为`derivation`的数据结构来表示一个package (但非常神奇的是, `derivation`是使用一个`set`来存储, 而非一个primitive的数据类型), 并提供了若干内置的构造函数. 在这里我将`derivation`分成两类:
 
-1. **Fetcher**, 即这类`derivation`的求值过程就是单纯的从指定的URL或git/mercurial仓库下载文件. 由于涉及到网络IO, 这类`derivation`的求值显然是非纯函数式的, 任何依赖于它的计算过程也不能被认为是纯函数式的, 因此每次执行都需要重新计算(失去了引用透明性带来的好处, 无法使用cache), 会带来大量的开销(每次计算时都要重新下载所有文件, 但可设置文件到期时间), 好处是每次计算时这个`derivation`的值都是up-to-date的. 在pure eval mode中这类`derivation`无法创建.
-2. **Fixed Output**, 这类`derivation`的值已经确定, 换句话说其所构建出来的package文件的内容是已知的. 
+1. **Fixed Output**, 这类`derivation`的值已经确定, 换句话说其所构建出来的package文件的内容是已知的. 
 这类`derivation`的求值(构建)过程也可以使用网络IO, 但在nix-lang中将其视为是纯函数的. 在第一次对其求值之后, nix-lang验证结果的Hash值, 如果和参数中指定的Hash值相同, 则将结果缓存, 否则将报错.
    - 也就是说Nix不确保这是一个纯函数, 但当它不符合纯函数的性质(相同输入得到不同的输出)的时候, Nix会发现并打断计算过程.
-3. 普通的`derivation`, 虽然其输出值无法确定, 但其求值过程无法使用任何网络IO以及(当开启沙盒功能)除参数以外的其他值和文件, Nix假定这一过程是可重现的、求值仅和参数有关.
+2. 普通的`derivation`, 虽然其输出值无法确定, 但其求值过程无法使用任何网络IO以及(当开启沙盒功能)除参数以外的其他值和文件, Nix假定这一过程是可重现的、求值仅和参数有关.
    - 嗯没错这是一个假设, Nix的整个模型实际上是建立在这个假设之上的, 但由于Nix对构建环境的严格限制, 大部分情况下可以认为这个假设是成立的.
 
-后两种`derivation`都是使用`builtins.derivation`这个函数构造的, 调用该函数的时候至少需要提供`name`, `builder`, `system`三个参数:
+这两种`derivation`都是使用`builtins.derivation`这个函数构造的, 调用该函数的时候至少需要提供`name`, `builder`, `system`三个参数:
 
 - **name**: 指定`derivation`的名字, 也即package的名字.
 - **builder**: 用于构建package的程序, 可以是一个绝对路径, 也可以是一个"builtin:"开头的内建builder.
@@ -169,6 +168,8 @@ Currently defined functions:
    url="http://tarballs.nixos.org/stdenv-linux/i686/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/busybox"
    ~~~~
 
+   值得关注的是变量`out`, 这个变量的值对应的是一个路径, 即该`derivation`所构建出来的package存放的位置, 其Hash值部分是根据`derivation`中给定的Hash值计算得到的.
+
 4. 为构建进程设置private namespace, 分别为:
    - PID namespace, 使得构建进程只能看到自己和自己的子进程.
    - Mount namespace, 保证只有在`derivation`中指明的依赖路径(即所依赖的其他`derivation`在`/nix/store`中对应的路径), 以及`/proc`、`/dev`、`/etc`等必要的目录是可见的.
@@ -177,6 +178,7 @@ Currently defined functions:
 
 5. 执行builder程序, 在这个例子中执行的是Nix内置的fetchurl, 这个程序会读取环境变量中`url`的值, 下载相应的文件到`$out`, 并根据`executable`和`unpack`的值决定是否进行运行权限设置和解压操作.
 6. 如果builder程序在`$out`路径成功创建了文件或目录, Nix会计算该路径下文件内容的Hash值并和`outputHash`参数对比. 如果`$out`没有被创建或者Hash值不相符则报错, 否则构建成功.
+7. 当同一个`derivation`被再次构建时, 由于它已经被成功构建过一次, Nix会发现其输出路径(即`$out`)已经存在, 求值过程直接返回, 不会执行构建操作.
 
 这里并没有描述所有的细节, 仅仅摘录了其中比较重要的步骤. 可以看到, Nix使用了多种方法, 尽量使得`derivation`的构建进程的运行环境不受系统环境的影响, 因而在不同的机器上执行都能得到相同的结果, 也就是实现所谓的[Reproducible Build](https://reproducible-builds.org/), 从而使得`derivation`的求值过程符合纯函数式的定义.
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 dir=$(dirname $0)
-parseltongue=$(nix-build $dir/generator.nix -A speak)
-staticFiles=$(nix-build $dir/generator.nix -A static)
+parseltongue=$(nix-build $dir/generator.nix -A speak --out-link result-speak)
+staticFiles=$(nix-build $dir/generator.nix -A static --out-link result-static)
 $parseltongue/bin/speech --input-dir $dir/content --output-dir $dir/docs
 cp -r --no-preserve=all $staticFiles/. $dir/docs/static

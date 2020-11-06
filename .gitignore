@@ -1,7 +1,7 @@
 dist
 dist-*
 .ghc.environment.*
-result
+result-*
 .shake
 
 !b/.gitkeep
