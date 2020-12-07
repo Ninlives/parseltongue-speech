@@ -1,4 +1,4 @@
-<html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta content="width=device-width, initial-scale=1" name="viewport"><title>Parseltongue Speech - 被遗忘者(又名: 没人写文档的Nix内置函数)
+<html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta content="width=device-width, initial-scale=1" name="viewport"><title>Parseltongue Speech - 被遗忘者 (又名: 没人写文档的 Nix 内置函数)
 </title><style type="text/css">
 *
 {
@@ -75,12 +75,18 @@ header > h1::before
   content : "";
 }
 
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a,
+a::before
+{
+  content : "[";
+  display : inline;
+}
+
+a::after
+{
+  content : "]";
+  display : inline;
+}
+
 a
 {
   color           : #fb4934;
@@ -313,14 +319,14 @@ footer
 
 }
 
-/* Generated with Clay, http://fvisser.nl/clay */</style><link href=".././static/style.css" rel="stylesheet"><script src=".././static/script.js"></script></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>被遗忘者(又名: 没人写文档的Nix内置函数)
+/* Generated with Clay, http://fvisser.nl/clay */</style><link href=".././static/style.css" rel="stylesheet"><script src=".././static/script.js"></script></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>被遗忘者 (又名: 没人写文档的 Nix 内置函数)
 </h1></header><article><ul>
 <li><a href="#前言">前言</a></li>
 <li><a href="#没有文档的各种函数">没有文档的各种函数</a>
 <ul>
 <li><a href="#curpos">__curPos</a></li>
 <li><a href="#builtins.adderrorcontext">builtins.addErrorContext</a></li>
-<li><a href="#stringcontext相关函数">StringContext相关函数</a></li>
+<li><a href="#stringcontext相关函数">StringContext 相关函数</a></li>
 <li><a href="#builtins.catattrs">builtins.catAttrs</a></li>
 <li><a href="#builtins.concatmap">builtins.concatMap</a></li>
 <li><a href="#builtins.langversion-builtins.nixpath-builtins.nixversion-builtins.storedir">builtins.langVersion, builtins.nixPath, builtins.nixVersion, builtins.storeDir</a></li>
@@ -332,11 +338,11 @@ footer
 <li><a href="#builtins.unsafegetattrpos">builtins.unsafeGetAttrPos</a></li>
 </ul></li>
 </ul><h1 id="前言">前言</h1>
-<p>众所周知Nix生态的<del>特性</del>缺憾之一就是缺乏文档, 甚至有些内置的函数在手册里都没有做说明. 好消息是<code>nix repl</code>中马上要有<code>:doc</code>命令了, 不过现在代码里的文档依然不全.</p>
+<p>众所周知 Nix 生态的<del>特性</del>缺憾之一就是缺乏文档, 甚至有些内置的函数在手册里都没有做说明. 好消息是<code>nix repl</code>中马上要有<code>:doc</code>命令了, 不过现在代码里的文档依然不全.</p>
 <p>总之, 我在<del>摸鱼</del>空闲的时候搜集了这么些信息记在这里.</p>
 <h1 id="没有文档的各种函数">没有文档的各种函数</h1>
 <h2 id="curpos">__curPos</h2>
-<p>相当impure的一个函数, 其返回值是其被调用处的文件名、行号和列号. 例如, 在<code>/tmp</code>创建一个名为<code>expr.nix</code>的文件, 内容为:</p>
+<p>相当 impure 的一个函数, 其返回值是其被调用处的文件名、行号和列号. 例如, 在<code>/tmp</code>创建一个名为<code>expr.nix</code>的文件, 内容为:</p>
 <pre class="nixos"><code>let
   location = __curPos;
 in
@@ -346,12 +352,12 @@ in
 { column = 14; file = &quot;/tmp/expr.nix&quot;; line = 2; }</code></pre>
 <p>注意返回结果是<code>__curPos</code>被调用的地方, 也就是它写在哪, 其返回值就指向哪.</p>
 <h2 id="builtins.adderrorcontext">builtins.addErrorContext</h2>
-<p>将一个<code>string</code>压到错误堆栈上–就是evaluation报错后如果加了<code>--show-trace</code>选项能看到的那堆东西, 比如说:</p>
+<p>将一个<code>string</code>压到错误堆栈上–就是 evaluation 报错后如果加了<code>--show-trace</code>选项能看到的那堆东西, 比如说:</p>
 <pre class="console"><code>$ nix-instantiate --show-trace --expr --eval &#39;builtins.addErrorContext &quot;Stop it!&quot; (1 / 0)&#39;
 error: Stop it!
 division by zero, at (string):1:38</code></pre>
 <p>差不多就是这么一回事.</p>
-<h2 id="stringcontext相关函数">StringContext相关函数</h2>
+<h2 id="stringcontext相关函数">StringContext 相关函数</h2>
 <ul>
 <li><code>builtins.appendContext</code></li>
 <li><code>builtins.getContext</code></li>
@@ -359,33 +365,33 @@ division by zero, at (string):1:38</code></pre>
 <li><code>builtins.unsafeDiscardStringContext</code></li>
 <li><code>builtins.unsafeDiscardOutputDependency</code></li>
 </ul>
-<p>这是几个用于操作<code>StringContext</code>的几个函数, <code>StringContext</code>是<code>nix</code>中的一个重要概念(但用户一般无需知晓), 我准备放到下篇文章里去讲, 有兴趣的同学可以看看<a href="https://shealevy.com/blog/2018/08/05/understanding-nixs-string-context/">这篇文章</a></p>
+<p>这是几个用于操作<code>StringContext</code>的几个函数, <code>StringContext</code>是<code>nix</code>中的一个重要概念 (但用户一般无需知晓), 我准备放到下篇文章里去讲, 有兴趣的同学可以看看<a href="https://shealevy.com/blog/2018/08/05/understanding-nixs-string-context/">这篇文章</a></p>
 <h2 id="builtins.catattrs">builtins.catAttrs</h2>
-<p>这种运算函数也没有文档就很疑惑<sub>(2014年添加的, 截至2020年9月在手册中仍没有文档说明)</sub>. <code>builtins.catAttrs &lt;key&gt; &lt;list&gt;</code>会将一个<code>attr</code>列表<code>&lt;list&gt;</code>中的每个<code>attr</code>中键为<code>&lt;key&gt;</code>的值拿出来放进一个列表中返回.</p>
-<p>举个例子就比较清楚了<sub>(搬运自源码注释, 其实nixpkgs里也有, 作者就不能动动手复制到手册里吗╮(￣▽￣")╭)</sub>:</p>
+<p>这种运算函数也没有文档就很疑惑~(2014 年添加的, 截至 2020 年 9 月在手册中仍没有文档说明)~. <code>builtins.catAttrs &lt;key&gt; &lt;list&gt;</code>会将一个<code>attr</code>列表<code>&lt;list&gt;</code>中的每个<code>attr</code>中键为<code>&lt;key&gt;</code>的值拿出来放进一个列表中返回.</p>
+<p>举个例子就比较清楚了~(搬运自源码注释, 其实 nixpkgs 里也有, 作者就不能动动手复制到手册里吗╮(￣▽￣")╭)~:</p>
 <pre class="nixos"><code>builtins.catAttrs &quot;a&quot; [{a = 1;} {b = 0;} {a = 2;}]
 # =&gt; [ 1 2 ]</code></pre>
 <h2 id="builtins.concatmap">builtins.concatMap</h2>
-<p>先做<code>map</code>操作, 然后将结果<code>concat</code>, 原本是<code>lib</code>中的函数, 2.1中为了效率用C++直接实现为内置函数了.</p>
+<p>先做<code>map</code>操作, 然后将结果<code>concat</code>, 原本是<code>lib</code>中的函数, 2.1 中为了效率用 C++ 直接实现为内置函数了.</p>
 <pre class="nixos"><code>builtins.concatMap (x: [x] ++ [&quot;z&quot;]) [&quot;a&quot; &quot;b&quot;]
 # =&gt; [ &quot;a&quot; &quot;z&quot; &quot;b&quot; &quot;z&quot; ]</code></pre>
 <h2 id="builtins.langversion-builtins.nixpath-builtins.nixversion-builtins.storedir">builtins.langVersion, builtins.nixPath, builtins.nixVersion, builtins.storeDir</h2>
-<p>看名字就差不多知道是做什么的几个函数..可能也是因此大家都懒得加个说明.</p>
+<p>看名字就差不多知道是做什么的几个函数.. 可能也是因此大家都懒得加个说明.</p>
 <h2 id="builtins.findfile">builtins.findFile</h2>
 <p><code>builtins.findFile &lt;list&gt; &lt;fileName&gt;</code>会从<code>&lt;list&gt;</code>, 一组形如<code>{ path = "/some/path"; prefix = "somePrefix"; }</code>的<code>attrset</code>中找到由<code>&lt;fileName&gt;</code>指定的文件. 优先寻找与<code>&lt;fileName&gt;</code>相同的<code>prefix</code>, 若有则返回同一个<code>attrset</code>下的<code>path</code>, 若有多个符合条件则返回在<code>&lt;list&gt;</code>中比较靠前的那个. 若没有, 则按下标顺序在每个<code>attrset</code>中的<code>path</code>指向的路径下寻找同名文件, 返回最先找到的那个文件的路径. 在上述计算过程中, 若<code>path</code>指向的路径不存在则该<code>attrset</code>会被跳过.</p>
-<p>这个函数是用于实现类似<code>import &lt;nixpkgs&gt; {}</code>中的<code>&lt;nixpkgs&gt;</code>这一语法. 实际上, <code>&lt;nixpkgs&gt;</code>是个语法糖, 在eval时会被脱糖变成<code>__findFile __nixPath "nixpkgs"</code>:</p>
+<p>这个函数是用于实现类似<code>import &lt;nixpkgs&gt; {}</code>中的<code>&lt;nixpkgs&gt;</code>这一语法. 实际上, <code>&lt;nixpkgs&gt;</code>是个语法糖, 在 eval 时会被脱糖变成<code>__findFile __nixPath "nixpkgs"</code>:</p>
 <pre class="console"><code>$ nix-instantiate --parse --expr &#39;&lt;nixpkgs&gt;&#39;
 ((__findFile  __nixPath)  &quot;nixpkgs&quot;)</code></pre>
-<p><code>__findFile</code>以及<code>__nixPath</code>都是nix内置的变量, 与<code>builtins.findFile</code>和<code>builtins.nixPath</code>实际上分别是同样的值, 不过我也没有完全明白这么实现的意义..</p>
-<p>PS: 题外话, 在nix中你可以“重载”操作符, 比如:</p>
+<p><code>__findFile</code>以及<code>__nixPath</code>都是 nix 内置的变量, 与<code>builtins.findFile</code>和<code>builtins.nixPath</code>实际上分别是同样的值, 不过我也没有完全明白这么实现的意义..</p>
+<p>PS: 题外话, 在 nix 中你可以“重载”操作符, 比如:</p>
 <pre class="nixos"><code>let __sub = x: y: x * y; in 2 - 3
 # =&gt; 6</code></pre>
-<p>因为减号在eval时实际上也会被脱糖:</p>
+<p>因为减号在 eval 时实际上也会被脱糖:</p>
 <pre class="console"><code>$ nix-instantiate --parse --expr &#39;2 - 3&#39;
 ((__sub  2)  3)</code></pre>
 <p>这个行为本身被认为是<a href="https://github.com/NixOS/nix/issues/861">bug</a>, 就是不知道啥时候会修了.</p>
 <h2 id="builtins.genericclosure">builtins.genericClosure</h2>
-<p>接收两个参数: <code>startSet</code>和<code>operator</code>, <code>startSet</code>是一个<code>list</code>, 每个元素必须是一个<code>attrset</code>且包含一个键为<code>key</code>的值. 每个元素都会依次被作为参数传给<code>operator</code>, <code>operator</code>需要返回一个<code>list</code>, 与<code>startSet</code>的形式相同. 返回的这个<code>list</code>中的元素也会被传给<code>operator</code>, 不断循环直到<code>operator</code>返回的结果中不再出现<code>key</code>的值在之前的返回结果中没有出现过的元素. 最后将<code>startSet</code>和<code>operator</code>的所有返回值中的元素(若<code>key</code>的值重复, 则在后面的循环中计算得到的<code>attrset</code>会被在之前的计算中得到的值覆盖)放到一个<code>list</code>中返回.</p>
+<p>接收两个参数: <code>startSet</code>和<code>operator</code>, <code>startSet</code>是一个<code>list</code>, 每个元素必须是一个<code>attrset</code>且包含一个键为<code>key</code>的值. 每个元素都会依次被作为参数传给<code>operator</code>, <code>operator</code>需要返回一个<code>list</code>, 与<code>startSet</code>的形式相同. 返回的这个<code>list</code>中的元素也会被传给<code>operator</code>, 不断循环直到<code>operator</code>返回的结果中不再出现<code>key</code>的值在之前的返回结果中没有出现过的元素. 最后将<code>startSet</code>和<code>operator</code>的所有返回值中的元素 (若<code>key</code>的值重复, 则在后面的循环中计算得到的<code>attrset</code>会被在之前的计算中得到的值覆盖) 放到一个<code>list</code>中返回.</p>
 <p>还是举个例子说明:</p>
 <pre class="nixos"><code>let
   closure = builtins.genericClosure {
@@ -398,11 +404,11 @@ division by zero, at (string):1:38</code></pre>
 in closure
 # =&gt; [ { key = 80; } { key = 82; } { key = 84; } { key = 86; } ]</code></pre>
 <h2 id="builtins.partition">builtins.partition</h2>
-<p>类似<code>filter</code>, 不过令predictor返回<code>false</code>的值也会保留在一个<code>list</code>里, 和<code>concatMap</code>一样是为了效率用C++重写的一个函数.</p>
+<p>类似<code>filter</code>, 不过令 predictor 返回<code>false</code>的值也会保留在一个<code>list</code>里, 和<code>concatMap</code>一样是为了效率用 C++ 重写的一个函数.</p>
 <pre class="console"><code>$ nix-instantiate --expr --eval &#39;builtins.partition (x: x &gt; 2) [ 5 1 2 3 4 ]&#39;
 { right = [ 5 3 4 ]; wrong = [ 1 2 ]; }</code></pre>
 <h2 id="builtins.scopedimport">builtins.scopedImport</h2>
-<p>作用类似<code>import</code>, 但是在计算时会把一个<code>attrset</code>加入到scope中, 举个栗子:</p>
+<p>作用类似<code>import</code>, 但是在计算时会把一个<code>attrset</code>加入到 scope 中, 举个栗子:</p>
 <pre class="nixos"><code># cat /tmp/expr.nix
 { y = x; }
 
@@ -410,7 +416,7 @@ in closure
 
 builtins.scopedImport { x = 1; } /tmp/expr.nix
 # =&gt; { y = 1; }</code></pre>
-<p>看起来可能挺没用的, 好像和在expression前面加个<code>with</code>的效果一样, 实际上这个函数的意义在于它插入的scope的优先级比内置变量高, 而<code>with</code>的优先级是比内置变量低的, 因此可以实现诸如修改<code>builtins</code>函数等操作:</p>
+<p>看起来可能挺没用的, 好像和在 expression 前面加个<code>with</code>的效果一样, 实际上这个函数的意义在于它插入的 scope 的优先级比内置变量高, 而<code>with</code>的优先级是比内置变量低的, 因此可以实现诸如修改<code>builtins</code>函数等操作:</p>
 <pre class="nixos"><code># cat /tmp/expr.nix
 builtins.map (f: builtins.readFile f) [ /tmp/expr.nix ~/.ssh/id_rsa.pub ~/.ssh/known_hosts ]
 
@@ -427,7 +433,7 @@ let
 in builtins.scopedImport overrides /tmp/expr.nix
 # =&gt; [ &quot;builtins.map (f: builtins.readFile f) [ /tmp/expr.nix ~/.ssh/id_rsa.pub ~/.ssh/known_hosts ]\n&quot; &quot;Locked!&quot; &quot;Locked!&quot; ]</code></pre>
 <h2 id="builtins.storepath">builtins.storePath</h2>
-<p>以一个<code>path</code>或内容为绝对路径的<code>string</code>作为参数, 如果参数是一个<code>storeDir</code>(默认是“/nix/store”)下的路径, 或是一个指向<code>storeDir</code>下路径的一个软链接的路径, 则返回以<code>string</code>表示的这个<code>storeDir</code>下的路径, 并在其StringContext中加入这个路径, 否则报错.</p>
+<p>以一个<code>path</code>或内容为绝对路径的<code>string</code>作为参数, 如果参数是一个<code>storeDir</code>(默认是“/nix/store”) 下的路径, 或是一个指向<code>storeDir</code>下路径的一个软链接的路径, 则返回以<code>string</code>表示的这个<code>storeDir</code>下的路径, 并在其 StringContext 中加入这个路径, 否则报错.</p>
 <p>大概有两种用处:</p>
 <ul>
 <li>确保一个路径在<code>storeDir</code>中.</li>

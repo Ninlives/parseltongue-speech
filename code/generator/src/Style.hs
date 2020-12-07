@@ -55,9 +55,16 @@ pageStyle = do
     header |> h1 # before ? do
         content $ stringContent ""
 
-    h [1..6] ** a <> a ? do
+    a # before ? do
+        content $ stringContent "["
+        display inline
+    a # after ? do
+        content $ stringContent "]"
+        display inline
+    a ? do
         color G.red_l
         textDecoration none
+
     h [1..6] ? do
         lineHeight $ em 1.3
         fontSize $ rem 1.3

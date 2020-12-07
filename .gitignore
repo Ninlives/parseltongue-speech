@@ -3,5 +3,6 @@ dist-*
 .ghc.environment.*
 result-*
 .shake
+.cache
 
 !b/.gitkeep

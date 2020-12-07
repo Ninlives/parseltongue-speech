@@ -1,6 +1,6 @@
 % 关于Nix的一些事
 
-本来是想简单介绍一下NixOS以及在Macbook Pro 2016上安装NixOS的一些建议, 结果拖到了现在电脑都换成戴尔了... 想起什么写什么吧.
+本来是想简单介绍一下NixOS以及在Macbook Pro 2016上安装NixOS的一些建议,结果拖到了现在电脑都换成戴尔了...想起什么写什么吧.
 
 # 前言
 
@@ -224,7 +224,7 @@ Hello World!
 
 接下来我们定义了一个名叫"hello-world"的`derivation`, 它的builder是`"${busybox}"`.
 
-在nix-lang中, `string`内部出现的`${}`是**antiquotation**操作符, 类似于pythong的F-String中的`{}`, 也就是说`"prefix${<expr>}suffix"`等价于`"prefix" + (toString <expr>) + "suffix"`(实际上并不完全等价, nix-lang中的antiquotation有点坑, 但这里不讨论这个细节). 而对一个`derivation`执行`toString`操作返回的是它的`outPath`, 即上一小节中环境变量`out`指向的路径(这里是不会触发构建的, 因为这里相当于只是读取了`busybox`的元信息, 并没有进行读取`outPath`中的内容的操作 -- 概念上可以这么理解, 具体的实现可能以后会再写一篇文档来讲 ~咕咕咕~).
+在nix-lang中, `string`内部出现的`${}`是**antiquotation**操作符, 类似于python的F-String中的`{}`, 也就是说`"prefix${<expr>}suffix"`等价于`"prefix" + (toString <expr>) + "suffix"`(实际上并不完全等价, nix-lang中的antiquotation有点坑, 但这里不讨论这个细节). 而对一个`derivation`执行`toString`操作返回的是它的`outPath`, 即上一小节中环境变量`out`指向的路径(这里是不会触发构建的, 因为这里相当于只是读取了`busybox`的元信息, 并没有进行读取`outPath`中的内容的操作 -- 概念上可以这么理解, 具体的实现可能以后会再写一篇文档来讲 ~咕咕咕~).
 
 因此这个`derivation`的builder就是`"/nix/store/lan2w3ab1mvpxj3ppiw2sizh8i7rpz7s-busybox"`. 如你所见这里也没有提供`outputHash`, 因此这不是一个fixed-output derivation, 其构建过程会有如下不同:
 

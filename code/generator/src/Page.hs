@@ -82,7 +82,7 @@ renderPage route val = html_ [lang_ "en"] $ do
                                     li_ [class_ "pages"] $ do
                                         let meta = getMeta src
                                         toHtml $ (pack $ show date) `append` " -> "
-                                        a_ [href_ $ r `relativeTo` route] $ toHtml $ title meta
+                                        a_ [href_ $ r `relativeTo` route] $ toHtml $ strip (title meta)
                                         renderMarkdown `mapM_` description meta
         content :: Html ()
         content = case route of
