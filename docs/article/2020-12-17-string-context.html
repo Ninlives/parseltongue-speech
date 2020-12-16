@@ -1,0 +1,484 @@
+<html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta content="width=device-width, initial-scale=1" name="viewport"><title>Parseltongue Speech - 对 String Context 的粗浅解释
+</title><style type="text/css">
+*
+{
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  -ms-box-sizing     : border-box;
+  -o-box-sizing      : border-box;
+  box-sizing         : border-box;
+  text-rendering     : geometricPrecision;
+}
+
+html
+{
+  font-size        : 100%;
+  font-family      : monospace,serif;
+  min-height       : 100%;
+  max-width        : 100%;
+  background-color : #282828;
+  color            : #ebdbb2;
+}
+
+body
+{
+  font-size   : 1rem;
+  line-height : 1.5rem;
+  margin      : 0px 0px 0px 0px;
+  word-wrap   : break-word;
+  min-height  : 100%;
+  max-width   : 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+code,
+footer,
+header,
+li,
+ol,
+p,
+section,
+ul
+{
+  float   : none;
+  margin  : 0px 0px 0px 0px;
+  padding : 0px 0px 0px 0px;
+}
+
+header > h1
+{
+  position  : relative;
+  display   : inline-block;
+  display   : table-cell;
+  color     : #458588;
+  font-size : 1.39999rem;
+  padding   : 1.5rem 0rem 2rem 0rem;
+  overflow  : hidden;
+}
+
+header > h1::after
+{
+  content  : "========================================================================================================================";
+  position : absolute;
+  bottom   : 0.75rem;
+  left     : 0rem;
+}
+
+header > h1::before
+{
+  content : "";
+}
+
+a::before
+{
+  content : "[";
+  display : inline;
+}
+
+a::after
+{
+  content : "]";
+  display : inline;
+}
+
+a
+{
+  color           : #fb4934;
+  text-decoration : none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+  line-height   : 1.3em;
+  font-size     : 1.3rem;
+  color         : #98971a;
+  position      : relative;
+  margin-bottom : 0.75rem;
+}
+
+h1::before
+{
+  display : inline;
+  content : "# ";
+}
+
+h2::before
+{
+  display : inline;
+  content : "## ";
+}
+
+h3::before
+{
+  display : inline;
+  content : "### ";
+}
+
+h4::before
+{
+  display : inline;
+  content : "#### ";
+}
+
+h5::before
+{
+  display : inline;
+  content : "##### ";
+}
+
+h6::before
+{
+  display : inline;
+  content : "###### ";
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h1
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h2
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h3
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h4
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h5
+{
+  padding-top : 0.75rem;
+}
+
+:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + h6
+{
+  padding-top : 0.75rem;
+}
+
+li
+{
+  position      : relative;
+  display       : block;
+  padding-left  : 20px;
+  margin-bottom : 0.2rem;
+}
+
+li::after
+{
+  position : absolute;
+  top      : 0px;
+  left     : 0px;
+}
+
+ul > li::after
+{
+  content : "-";
+}
+
+ol
+{
+  counter-reset : a;
+}
+
+ol > li::after
+{
+  content           : counter(a) ".";
+  counter-increment : a;
+}
+
+
+:not(li) > p,
+:not(li) > ol,
+:not(li) > ul
+{
+  margin-bottom : 1rem;
+}
+
+blockquote
+{
+  position      : relative;
+  padding-left  : 1rem;
+  margin-top    : 0.5rem;
+  margin-bottom : 1rem;
+  overflow      : hidden;
+  color         : #a89984;
+}
+
+blockquote::after
+{
+  content     : ">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A";
+  white-space : pre;
+  position    : absolute;
+  top         : 0px;
+  left        : 0px;
+}
+
+blockquote > p
+{
+  margin-bottom : 0rem;
+}
+
+blockquote,
+code
+{
+  font-size : 1rem;
+}
+
+em
+{
+  font-style : italic;
+}
+
+em::after,
+em::before
+{
+  content : "/";
+  display : inline;
+}
+
+strong
+{
+  color : #d79921;
+}
+
+strong::after,
+strong::before
+{
+  content : "*";
+  display : inline;
+}
+
+
+:not(pre) > code
+{
+  color       : #689d6a;
+  font-family : monospace,serif;
+}
+
+:not(pre) > code::after,
+:not(pre) > code::before
+{
+  content : "`";
+  display : inline;
+}
+
+pre
+{
+  background-color : #1d2021;
+  color            : #98971a;
+}
+
+footer
+{
+  color    : #504945;
+  bottom   : 0rem;
+  position : relative;
+}
+
+.container
+{
+  max-width   : 60%;
+  min-height  : 100%;
+  margin      : 0px auto 0px auto;
+  margin-left : 20%;
+  padding     : 0px 1rem 0px 1rem;
+}
+
+.inner
+{
+  min-height : 95%;
+}
+
+@media screen and (max-width: 500px)
+{
+
+.container
+{
+  max-width    : 100%;
+  margin-left  : 0rem;
+  margin-right : 0rem;
+}
+
+}
+
+/* Generated with Clay, http://fvisser.nl/clay */</style><link href=".././static/style.css" rel="stylesheet"><script src=".././static/script.js"></script></head><body><div class="container"><div class="inner"><a href="../index.html">Home</a> - <a href="../posts.html">Posts</a><header><h1>对 String Context 的粗浅解释
+</h1></header><article><ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#什么是string-context">什么是 String Context</a></li>
+<li><a href="#一点和string-context有关的事情">一点和 String Context 有关的事情</a></li>
+<li><a href="#总结">总结</a></li>
+</ul><h1 id="前言">前言</h1>
+<p>String Context 是 Nix 语言中的一个重要概念, 这是一种和字符串关联的元信息. 只要你在使用 Nix 打包 package, 你就一定在使用 String Context, 因为 String Context 是 Nix 中用于追溯依赖信息的手段. 但这些信息在 Nix 中是隐式传递的, 用户一般不会直接面对它, 更不需要对它进行操作.</p>
+<p>但多了解一下 Nix 的运作方式也没有坏处嘛.</p>
+<p>(本文部分内容参考了<a href="https://shealevy.com/blog/2018/08/05/understanding-nixs-string-context">这篇文章</a>.)</p>
+<h1 id="什么是string-context">什么是 String Context</h1>
+<p>String Context 是一组和字符串关联的元信息, 可以通过<code>bulitins.getContext</code>读取. 打开一个<code>nix repl</code>看一下:</p>
+<pre class="nixos"><code>nix-repl&gt; :l &lt;nixpkgs&gt;
+nix-repl&gt; hello.outPath                                                                                     
+&quot;/nix/store/v5sv61sszx301i0x6xysaqzla09nksnd-hello-2.10&quot;
+
+nix-repl&gt; :p builtins.getContext hello.outPath
+{ &quot;/nix/store/s6rn4jz1sin56rf4qj5b5v8jxjm32hlk-hello-2.10.drv&quot; = { outputs = [ &quot;out&quot; ]; }; }
+
+nix-repl&gt; builtins.getContext &quot;A regular string&quot;
+{ }</code></pre>
+<p>String Context 是 Nix 中追溯依赖信息的手段. String Context 在<code>derivation</code>函数中产生, 并在对字符串的操作过程中传播 – 为什么使用字符串呢? 因为字符串是 build system 中最常见也最重要的数据类型, 构建脚本、配置文件等都是以字符串表达和存储的.</p>
+<p>举个栗子:</p>
+<pre class="nixos"><code>nix-repl&gt; busybox = derivation {
+                      name = &quot;busybox&quot;;
+                      builder = &quot;builtin:fetchurl&quot;;
+                      system = &quot;x86_64-linux&quot;;
+                      outputHash = &quot;ef4c1be6c7ae57e4f654efd90ae2d2e204d6769364c46469fa9ff3761195cba1&quot;;
+                      outputHashAlgo = &quot;sha256&quot;;
+                      outputHashMode = &quot;recursive&quot;;
+                      url = &quot;http://tarballs.nixos.org/stdenv-linux/i686/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/busybox&quot;;
+                      executable = true;
+                      unpack = false;
+                    }
+
+nix-repl&gt; :p builtins.getContext busybox.outPath # derivation 返回的实际上是一个set, 其中drvPath是drv文件的路径, outPath是构建成功后会输出的路径, 产生的String Context会被绑定到这两个字符串上
+{ &quot;/nix/store/vq227qrc3b4pz3843cv8djbia525635s-busybox.drv&quot; = { outputs = [ &quot;out&quot; ]; }; }
+
+nix-repl&gt; sentence = &quot;这个句子与${busybox.outPath}进行了拼接, 因此它的String Context传播到了这个字符串&quot;
+
+nix-repl&gt; :p builtins.getContext sentence
+{ &quot;/nix/store/vq227qrc3b4pz3843cv8djbia525635s-busybox.drv&quot; = { outputs = [ &quot;out&quot; ]; }; }</code></pre>
+<p>P.S. 在这里<code>"${busybox.outPath}"</code>和常见的<code>"${busybox}"</code>的写法是等价的, 因为在对一个 set 进行 antiquotation 时, 会对这个 set 中键值为“outPath”的值进行操作, 如果找不到这样一个键值就会报错. 这么设计的原因是<code>derivation</code>返回的是一个 set, 而对一个 derivation 进行 antiquotation 在 Nix 中是非常常见的, 并且这个时候我们通常需要的就是“outPath”的值. 于是, 因为 Nix 中并没有一个专门表达 derivation 的数据类型, 就设计了这么一个相当随便的 feature.</p>
+<p>如果<code>derivation</code>的参数中包含了任何的 String Context, 那么它们都会成为所产生的 derivation 的依赖, 继续上面的栗子:</p>
+<pre class="nixos"><code>nix-repl&gt; helloWorld = derivation {
+                         name = &quot;hello-world&quot;;
+                         builder = &quot;${busybox}&quot;; # String Context传播到了这个字符串中
+                         args = [ &quot;ash&quot; &quot;-c&quot; &quot;echo Hello World! &gt; $out&quot; ];
+                         system = &quot;x86_64-linux&quot;;
+                       }
+
+nix-repl&gt; helloWorld
+«derivation /nix/store/mg5yc9xp2z9jjx0sjbpkhbqj2yy0w6sh-hello-world.drv»</code></pre>
+<p>现在运行一下<code>nix show-derivation /nix/store/mg5yc9xp2z9jjx0sjbpkhbqj2yy0w6sh-hello-world.drv</code>看一下:</p>
+<pre><code>{
+  &quot;/nix/store/mg5yc9xp2z9jjx0sjbpkhbqj2yy0w6sh-hello-world.drv&quot;: {
+    &quot;outputs&quot;: {
+      &quot;out&quot;: {
+        &quot;path&quot;: &quot;/nix/store/w62gjxd3xj487mv7dgzypgcl32na5daw-hello-world&quot;
+      }
+    },
+    &quot;inputSrcs&quot;: [],
+    &quot;inputDrvs&quot;: {
+      &quot;/nix/store/vq227qrc3b4pz3843cv8djbia525635s-busybox.drv&quot;: [
+        &quot;out&quot;
+      ]
+    },
+    &quot;platform&quot;: &quot;x86_64-linux&quot;,
+    &quot;builder&quot;: &quot;/nix/store/lan2w3ab1mvpxj3ppiw2sizh8i7rpz7s-busybox&quot;,
+    &quot;args&quot;: [
+      &quot;ash&quot;,
+      &quot;-c&quot;,
+      &quot;echo Hello World! &gt; $out&quot;
+    ],
+    &quot;env&quot;: {
+      &quot;builder&quot;: &quot;/nix/store/lan2w3ab1mvpxj3ppiw2sizh8i7rpz7s-busybox&quot;,
+      &quot;name&quot;: &quot;hello-world&quot;,
+      &quot;out&quot;: &quot;/nix/store/w62gjxd3xj487mv7dgzypgcl32na5daw-hello-world&quot;,
+      &quot;system&quot;: &quot;x86_64-linux&quot;
+    }
+  }
+}</code></pre>
+<p>可以看到<code>busybox</code>已经成为<code>helloWorld</code>的依赖了, 通过这种方式就可以很自然的建立 derivation 之间的依赖关系. 另外, 注意到 String Context 是以 set 的形式存储的, 每个键值一般是一个 drv 文件的路径, 而对应的值据我所知有三种类型:</p>
+<ul>
+<li><code>{ outputs = [ ... ]; }</code>表示依赖这个 derivation 的某些输出, 比如在上面的例子中, <code>busybox.outPath</code>仅依赖<code>busybox</code>这个 derivation 中名为<code>out</code>的输出. 当然这个 derivation 也只有这个输出, 但如果是一个在<code>outputs</code>中指定了多个输出的 derivation, 在使用 binary cache 时<code>nix-daemon</code>就会知晓这时候仅需要下载<code>out</code>这个输出, 从而节省一部分带宽.</li>
+<li><code>{ allOutputs = true; }</code>表示依赖这个 derivation 的全部输出, 例如<code>busybox.drvPath</code>所关联的 String Context 就是这个类型.</li>
+<li><code>{ path = true; }</code>表示对应的键值不是一个 drv 文件, 而是直接指向 store 下面的一个路径. 这种 String Context 一般是在对一个路径进行 antiquotation 时产生的, 比如<code>"这样一个字符串, 对${/path/to/some/file/on/disk}进行了操作"</code>.</li>
+</ul>
+<p>String Context 还会对 nix expression 的 evaluation 产生影响, 例如, 若<code>builtins.readDir</code>的参数是一个关联了非空 String Context 的字符串, 则在执行到这一处调用时, 会先将其中指定的所有依赖构建, 全部构建成功后才会继续执行. 而另外一些函数在这种情况下会报错, 一个比较完整的汇总表格可以在<a href="https://shealevy.com/blog/2018/08/05/understanding-nixs-string-context/">这篇文章</a>里找到. 简单地讲就是, 当一个函数“使用”到一个字符串的内容时, 如果是作为一个路径使用, 一般会需要将所有的依赖构建; 如果不是作为路径使用而字符串的 String Context 又不为空, 则会报错.</p>
+<h1 id="一点和string-context有关的事情">一点和 String Context 有关的事情</h1>
+<p>大多数时候, String Context 作为 Nix 语言的一种较为底层的机制是不会被用户感知到的. 但相应的, 如果在某些罕见的情况下出现 String Context 丢失的现象也比较难被发现. 比如下面讲到的这个例子.</p>
+<p>起因是这样的, 我想在我的系统中使用<a href="https://github.com/boltgolt/howdy">Howdy</a>作为屏幕解锁、使用<code>sudo</code>等时的验证工具, 然而 Howdy 在 Nixpkgs 中并没有被打包, 自然也不会有对应的模块选项, 而 NixOS 中<code>pam</code>模块的设计又没有任何扩展的空间 – 它会根据各个已有的选项的值生成一份最终的 pam 规则文件, 而我希望做到的是在这份文件中间的一个段落插入 Howdy 相关的规则, 因此也没有办法使用<code>lib.mkBefore</code>或者是<code>lib.mkAfter</code>. 最简单的办法是修改模块的定义, 但我并不想维护自己的一个 fork, 于是琢磨出来这么一个 hacky 的办法:</p>
+<pre class="nixos"><code>{ config, lib, pkgs, modulesPath, ... }:
+let
+  inherit (config.lib.shared) files;
+  inherit (config.lib.shared.function) dotNixFilesFrom; # 这个函数接收一个路径, 返回该路径下的所有.nix文件
+  configuration = import files.world;
+  eval = import (modulesPath + &quot;/..&quot;) {
+    configuration = { ... }: {
+      imports = [ files.world ]; # files.world指向我的配置的入口, 即configuration.nix
+      disabledModules = dotNixFilesFrom ./.; # Disable该文件所在文件夹下的所有配置, 目前这里只有这一份配置
+    };
+  };
+  # 结果就是, 我先得到了一份在去除了这份配置的情况下的config结果
+
+  pam-python = pkgs.callPackage (dirs.world.package + /pam-python.nix) { };
+  howdy-rule =
+    &quot;auth sufficient ${pam-python}/lib/security/pam_python.so ${pkgs.howdy}/lib/security/howdy/pam.py&quot;;
+
+  pam-service-config = eval.config.security.pam.services; # security.pam.services的&quot;原始&quot;定义
+
+  patched-pam-text = lib.mapAttrs (service: config:
+    let
+      # 修改原本的定义, 插入Howdy相关的规则
+      patched-text = pkgs.runCommand &quot;${service}-pam&quot; {
+        passAsFile = [ &quot;text&quot; ];
+        inherit (config) text;
+      } &#39;&#39;
+        cat $textPath &gt; $out
+        if grep -q &#39;auth required pam_unix\.so&#39; $out; then
+          sed -i &#39;/auth required pam_unix\.so/i ${howdy-rule}&#39; $out
+        elif grep -q &#39;auth sufficient pam_unix\.so&#39; $out; then
+          sed -i &#39;/auth sufficient pam_unix\.so/i ${howdy-rule}&#39; $out
+        fi
+      &#39;&#39;;
+      result = builtins.readFile patched-text;
+    in { text = mkForce result; }) pam-service-config;
+
+in { 
+  security.pam.services = patched-pam-text; # 覆盖掉原本的定义
+}</code></pre>
+<p><code>sudo nixos-rebuild boot</code>, 重启, Howdy 启动, 一切正常. 然后过了几天, 发生了一件诡异的事情: <code>sudo nixos-rebuild</code>找不到我的配置文件了. 由于我的配置文件存放在<code>$HOME</code>下, 因此我配置中修改了<code>nix.nixPath</code>的值, 将<code>&lt;nixos-config&gt;</code>指向了我实际的配置文件的位置, 然而<code>nixos-rebuild</code>执行时没有读取到正确的<code>NIX_PATH</code>的值. 我上 IRC 问了问, 并没有人知道是怎么回事 (估计也很难有人通过这点线索猜到吧 :P).</p>
+<p>我用<code>-I</code>选项指定了<code>&lt;nixos-config&gt;</code>的值, 重新执行了一次<code>nixos-rebuild</code>, 这次命令执行成功了. 重启后, <code>sudo nixos-rebuild</code>又可以正常执行了. 然而过了几天, 同样的情况再次发生, 而在这中间我并没有修改过系统的配置. 于是 debug 到头秃的我在电报群上询问 <sub>(哦, 如果大家对 NixOS 有兴趣的话可以加入<a href="https://t.me/nixos_zhcn">这个群</a>嘛 XD)</sub>, 这回在群里人的启发下, 我发现在 rebuild 之后, 问题消失了, 但执行<code>nix-collect-garbage</code>之后问题又出现了.</p>
+<p>这就很不科学 – GC 和我的环境变量有什么关系? 再次 rebuild 后, 运行<code>nix-store --gc --print-dead</code>输出会被 GC 的路径, 其中有一个路径非常可疑:</p>
+<blockquote>
+<p>/nix/store/yn5kbl7in0r7gsn4i87mgih4vsvs5mb1-pam-environment</p>
+</blockquote>
+<p>打开<code>/etc/pam.d/sudo</code>, 其中有这样一段:</p>
+<pre class="pam"><code># Session management.
+session required pam_env.so conffile=/nix/store/yn5kbl7in0r7gsn4i87mgih4vsvs5mb1-pam-environment readenv=0</code></pre>
+<p>可以看到这里的<code>pam-environment</code>和之前要被 GC 的那个路径是同一个文件. 但这不应该发生: 既然构建好的系统中出现了这个路径, 那么这个路径应该会被 Nix 注册为系统的运行时依赖, 不应该被 GC.</p>
+<p>原因是这样的: 当 Nix 扫描构建好的 derivation 中的运行时依赖时, 它不会去检查 store 中的所有路径 – 否则的话用到后来每次构建都会变得奇慢无比. 它只会检查在 drv 文件指明的依赖中出现的路径, 而这些依赖是通过 String Context 传递进来的, 那么这些 Context 应该是在某处丢失了, 导致<code>pam-environment</code>没有被注册为系统的依赖.</p>
+<p>出现问题的地方当然是在上面的配置当中: 在计算<code>patched-pam-text</code>时, 代码中使用了<code>builtins.readFile</code>读取修改后的规则文件内容, 而<code>readFile</code>是不会传递任何 String Context 的, 于是这里的依赖信息就丢失了. 这一段代码应该被改写成这样:</p>
+<pre class="nixos"><code>{ config, lib, pkgs, modulesPath, ... }:
+let
+  # 略过其他的定义
+  patched-pam-text = lib.mapAttrs (service: config:
+    let
+      patched-text = pkgs.runCommand &quot;${service}-pam&quot; {
+        passAsFile = [ &quot;text&quot; ];
+        inherit (config) text;
+      } &#39;&#39;
+      # 略过这里的脚本
+      &#39;&#39;;
+      result = builtins.appendContext (builtins.readFile patched-text) # builtins.appendContext可以将一组String Context绑定到字符串上
+               (builtins.getContext patched-text);
+    in { text = mkForce result; }) pam-service-config;
+in { 
+  security.pam.services = patched-pam-text; # 覆盖掉原本的定义
+}</code></pre>
+<h1 id="总结">总结</h1>
+<p>嗯.. 好像也没啥好总结的, 这篇文章比较粗略地解释了一下 String Context 是什么, 在 Nix 当中的作用以及非常罕见的一个大坑. 个人认为这是一个比较精巧的设计, 避免了依赖计算这么一个令人头大的问题.</p>
+<p>总之之前说过要写一篇关于 String Context 的文章, 拖了三个月终于拿起来写啦. 希望下一年我能勤快一些吧.</p></article></div><footer>EOF</footer></div></body></html>
