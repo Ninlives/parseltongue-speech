@@ -1,5 +1,13 @@
 <html lang="en"><head><meta charset="utf-8"><meta content="ie=edge" http-equiv="x-ua-compatible"><meta content="width=device-width, initial-scale=1" name="viewport"><title>Parseltongue Speech - 对 String Context 的粗浅解释
 </title><style type="text/css">
+@font-face
+{
+  font-family : "Fantasque";
+  src         : url(".././static/font.ttf")format("truetype");
+}
+
+
+/* Generated with Clay, http://fvisser.nl/clay */</style><style type="text/css">
 *
 {
   -webkit-box-sizing : border-box;
@@ -13,7 +21,7 @@
 html
 {
   font-size        : 100%;
-  font-family      : monospace,serif;
+  font-family      : "Fantasque", monospace,serif;
   min-height       : 100%;
   max-width        : 100%;
   background-color : #282828;
@@ -270,7 +278,7 @@ strong::before
 :not(pre) > code
 {
   color       : #689d6a;
-  font-family : monospace,serif;
+  font-family : "Fantasque", monospace,serif;
 }
 
 :not(pre) > code::after,
@@ -459,7 +467,8 @@ in {
 <p>打开<code>/etc/pam.d/sudo</code>, 其中有这样一段:</p>
 <pre class="pam"><code># Session management.
 session required pam_env.so conffile=/nix/store/yn5kbl7in0r7gsn4i87mgih4vsvs5mb1-pam-environment readenv=0</code></pre>
-<p>可以看到这里的<code>pam-environment</code>和之前要被 GC 的那个路径是同一个文件. 但这不应该发生: 既然构建好的系统中出现了这个路径, 那么这个路径应该会被 Nix 注册为系统的运行时依赖, 不应该被 GC.</p>
+<p>可以看到这里的<code>pam-environment</code>和之前要被 GC 的那个路径是同一个文件. 这里就是问题所在了: 在<code>sudo</code>执行命令时, 环境变量是通过<code>pam_env.so</code>设置的. 而执行 GC 后, <code>pam_env.so</code>的配置文件被删除, 导致<code>nixos-rebuild</code>没有读取到正确的<code>NIX_PATH</code>的值.</p>
+<p>但这不应该发生: 既然构建好的系统中出现了这个路径, 那么这个路径应该会被 Nix 注册为系统的运行时依赖, 不应该被 GC.</p>
 <p>原因是这样的: 当 Nix 扫描构建好的 derivation 中的运行时依赖时, 它不会去检查 store 中的所有路径 – 否则的话用到后来每次构建都会变得奇慢无比. 它只会检查在 drv 文件指明的依赖中出现的路径, 而这些依赖是通过 String Context 传递进来的, 那么这些 Context 应该是在某处丢失了, 导致<code>pam-environment</code>没有被注册为系统的依赖.</p>
 <p>出现问题的地方当然是在上面的配置当中: 在计算<code>patched-pam-text</code>时, 代码中使用了<code>builtins.readFile</code>读取修改后的规则文件内容, 而<code>readFile</code>是不会传递任何 String Context 的, 于是这里的依赖信息就丢失了. 这一段代码应该被改写成这样:</p>
 <pre class="nixos"><code>{ config, lib, pkgs, modulesPath, ... }:

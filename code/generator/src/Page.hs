@@ -17,6 +17,8 @@ import GHC.Generics (Generic)
 import Data.Text hiding (take)
 import Rib (IsRoute(..), Pandoc)
 import Data.Aeson (FromJSON, fromJSON)
+import Clay (fontFamily, fontFace, fontFaceSrc)
+import Clay (FontFaceSrc(..), FontFaceFormat(..))
 
 import qualified Clay as C
 import qualified Data.Aeson as Aeson
@@ -48,14 +50,20 @@ instance IsRoute Route where
 -- | Define your site HTML here
 renderPage :: Route a -> a -> Html ()
 renderPage route val = html_ [lang_ "en"] $ do
+    let staticPath = append (Route_root `relativeTo` route) "/static"
+        fontName = "Fantasque"
     head_ $ do
         meta_ [charset_ "utf-8"]
         meta_ [httpEquiv_ "x-ua-compatible", content_ "ie=edge"]
         meta_ [name_ "viewport", content_ "width=device-width, initial-scale=1"]
         title_ routeTitle
-        style_ [type_ "text/css"] $ C.render pageStyle
-        link_ [rel_ "stylesheet", href_ $ append (Route_root `relativeTo` route) "/static/style.css"]
-        script_ [src_ $ append (Route_root `relativeTo` route) "/static/script.js"] (""::Text)
+        style_ [type_ "text/css"] $
+            C.render (fontFace $ do
+                fontFamily [fontName] []
+                fontFaceSrc [FontFaceSrcUrl (append staticPath "/font.ttf") (Just TrueType)])
+        style_ [type_ "text/css"] $ C.render $ pageStyle fontName
+        link_ [rel_ "stylesheet", href_ $ append staticPath "/style.css"]
+        script_ [src_ $ append staticPath "/script.js"] (""::Text)
     body_ $ do
         div_ [class_ "container"] $ do
             div_ [class_ "inner"] $ do

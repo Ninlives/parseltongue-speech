@@ -17,7 +17,7 @@ let
   };
 
   inherit (pkgs)
-    writeText writeShellScript fetchurl runCommand coreutils pandoc;
+    writeText writeShellScript fetchurl runCommand coreutils pandoc nerdfonts;
   inherit (pkgs.python3Packages) pandocfilters;
   inherit (pkgs.writers) writePython3;
   inherit (pkgs.lib) concatMapStringsSep;
@@ -61,10 +61,12 @@ let
         sha256 = "1qnviqn1kdqi4xy64c59a5n75wziyln1nva5qa18s48xlzks7v4g";
       })
     ];
+    font = nerdfonts.override { fonts = [ "FantasqueSansMono" ]; };
   in runCommand "static" { } ''
     mkdir -p $out
     ${concatMapStringsSep "\n" (c: "cat ${c} >> $out/style.css") css}
     ${concatMapStringsSep "\n" (j: "cat ${j} >> $out/script.js") js}
+    cp ${font}/share/fonts/truetype/NerdFonts/'Fantasque Sans Mono Regular Nerd Font Complete Mono.ttf' $out/font.ttf 
   '';
 
   speak = writeShellScript "speak" ''

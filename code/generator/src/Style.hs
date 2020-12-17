@@ -4,7 +4,7 @@ module Style where
 
 import TextShow
 import Control.Monad
-import Data.Text (append, replicate)
+import Data.Text (Text(..), append, replicate)
 import Clay hiding (type_, title, map)
 import Clay.Selector (selectorFromText)
 import Prelude hiding ((**), rem, replicate, not)
@@ -15,8 +15,8 @@ import qualified Clay.Media as M
 import qualified Clay.Elements as E
 import qualified Clay.Stylesheet as S
 
-pageStyle :: Css
-pageStyle = do
+pageStyle :: Text -> Css
+pageStyle fontName = do
     star ? do
         boxSizing borderBox
         textRendering geometricPrecision
@@ -163,7 +163,7 @@ pageStyle = do
     where
         h :: [Int] -> Selector
         h ns = foldl1 (<>) $ map (\n -> selectorFromText $ append "h" $ showt n) ns
-        fonts = []
+        fonts = [fontName]
         fontFamilies = [
             monospace,
             serif
