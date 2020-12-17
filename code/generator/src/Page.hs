@@ -19,6 +19,7 @@ import Rib (IsRoute(..), Pandoc)
 import Data.Aeson (FromJSON, fromJSON)
 import Clay (fontFamily, fontFace, fontFaceSrc)
 import Clay (FontFaceSrc(..), FontFaceFormat(..))
+import Clay (monospace,serif)
 
 import qualified Clay as C
 import qualified Data.Aeson as Aeson
@@ -52,8 +53,8 @@ renderPage :: Route a -> a -> Html ()
 renderPage route val = html_ [lang_ "en"] $ do
     let staticPath = append (Route_root `relativeTo` route) "/static"
         fanta = "Fantasque"
-        tsuku  = "Tsukushi"
-        fonts = [fanta, tsuku]
+        -- tsuku  = "Tsukushi"
+        fonts = [fanta]
     head_ $ do
         meta_ [charset_ "utf-8"]
         meta_ [httpEquiv_ "x-ua-compatible", content_ "ie=edge"]
@@ -62,11 +63,11 @@ renderPage route val = html_ [lang_ "en"] $ do
         style_ [type_ "text/css"] $
             C.render (do
                 fontFace $ do
-                    fontFamily [fanta] []
-                    fontFaceSrc [FontFaceSrcUrl (append staticPath "/fanta-font.ttf") (Just TrueType)]
-                fontFace $ do
-                    fontFamily [tsuku] []
-                    fontFaceSrc [FontFaceSrcUrl (append staticPath "/tsuku-font.otf") (Just OpenType)])
+                    fontFamily [fanta] [monospace,serif]
+                    fontFaceSrc [FontFaceSrcUrl (append staticPath "/fanta-font.ttf") (Just TrueType)])
+                -- fontFace $ do
+                --     fontFamily [tsuku] [monospace,serif]
+                --     fontFaceSrc [FontFaceSrcUrl (append staticPath "/tsuku-font.otf") (Just OpenType)])
         style_ [type_ "text/css"] $ C.render $ pageStyle fonts
         link_ [rel_ "stylesheet", href_ $ append staticPath "/style.css"]
         script_ [src_ $ append staticPath "/script.js"] (""::Text)

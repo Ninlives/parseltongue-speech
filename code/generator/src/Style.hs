@@ -141,6 +141,10 @@ pageStyle fonts = do
         backgroundColor G.bgh
         color G.green
 
+    code ? do
+        fontFamily fonts fontFamilies
+        fontSize $ rem 0.8
+
     footer ? do
         color G.bg2
         bottom $ rem 0
@@ -164,4 +168,4 @@ pageStyle fonts = do
     where
         h :: [Int] -> Selector
         h ns = foldl1 (<>) $ map (\n -> selectorFromText $ append "h" $ showt n) ns
-        fontFamilies = []
+        fontFamilies = [monospace,serif]
