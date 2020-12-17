@@ -15,8 +15,8 @@ import qualified Clay.Media as M
 import qualified Clay.Elements as E
 import qualified Clay.Stylesheet as S
 
-pageStyle :: Text -> Css
-pageStyle fontName = do
+pageStyle :: [Text] -> Css
+pageStyle fonts = do
     star ? do
         boxSizing borderBox
         textRendering geometricPrecision
@@ -29,6 +29,7 @@ pageStyle fontName = do
         color G.fg
     body ? do
         fontSize $ rem 1
+        fontFamily fonts fontFamilies
         lineHeight $ rem 1.5
         margin (px 0) (px 0) (px 0) (px 0)
         wordWrap breakWord
@@ -163,8 +164,4 @@ pageStyle fontName = do
     where
         h :: [Int] -> Selector
         h ns = foldl1 (<>) $ map (\n -> selectorFromText $ append "h" $ showt n) ns
-        fonts = [fontName]
-        fontFamilies = [
-            monospace,
-            serif
-            ]
+        fontFamilies = []

@@ -61,12 +61,18 @@ let
         sha256 = "1qnviqn1kdqi4xy64c59a5n75wziyln1nva5qa18s48xlzks7v4g";
       })
     ];
-    font = nerdfonts.override { fonts = [ "FantasqueSansMono" ]; };
+    fanta-font = nerdfonts.override { fonts = [ "FantasqueSansMono" ]; };
+    tsuku-font = (fetchurl {
+      url =
+        "https://raw.githubusercontent.com/Ninlives/nixos-config/7ea1317e21d0578e163d6bc426fd5d5416faa9d7/resources/fonts/NotoSansSC-Regular.otf";
+      sha256 = "0i5i0sh5l7asa784f6h32ys8rs87mlfakbl0h45nzdjlfk4312xn";
+    });
   in runCommand "static" { } ''
     mkdir -p $out
     ${concatMapStringsSep "\n" (c: "cat ${c} >> $out/style.css") css}
     ${concatMapStringsSep "\n" (j: "cat ${j} >> $out/script.js") js}
-    cp ${font}/share/fonts/truetype/NerdFonts/'Fantasque Sans Mono Regular Nerd Font Complete Mono.ttf' $out/font.ttf 
+    cp ${fanta-font}/share/fonts/truetype/NerdFonts/'Fantasque Sans Mono Regular Nerd Font Complete Mono.ttf' $out/fanta-font.ttf 
+    cp ${tsuku-font} $out/tsuku-font.otf
   '';
 
   speak = writeShellScript "speak" ''

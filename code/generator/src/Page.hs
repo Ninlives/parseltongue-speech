@@ -51,17 +51,23 @@ instance IsRoute Route where
 renderPage :: Route a -> a -> Html ()
 renderPage route val = html_ [lang_ "en"] $ do
     let staticPath = append (Route_root `relativeTo` route) "/static"
-        fontName = "Fantasque"
+        fanta = "Fantasque"
+        tsuku  = "Tsukushi"
+        fonts = [fanta, tsuku]
     head_ $ do
         meta_ [charset_ "utf-8"]
         meta_ [httpEquiv_ "x-ua-compatible", content_ "ie=edge"]
         meta_ [name_ "viewport", content_ "width=device-width, initial-scale=1"]
         title_ routeTitle
         style_ [type_ "text/css"] $
-            C.render (fontFace $ do
-                fontFamily [fontName] []
-                fontFaceSrc [FontFaceSrcUrl (append staticPath "/font.ttf") (Just TrueType)])
-        style_ [type_ "text/css"] $ C.render $ pageStyle fontName
+            C.render (do
+                fontFace $ do
+                    fontFamily [fanta] []
+                    fontFaceSrc [FontFaceSrcUrl (append staticPath "/fanta-font.ttf") (Just TrueType)]
+                fontFace $ do
+                    fontFamily [tsuku] []
+                    fontFaceSrc [FontFaceSrcUrl (append staticPath "/tsuku-font.otf") (Just OpenType)])
+        style_ [type_ "text/css"] $ C.render $ pageStyle fonts
         link_ [rel_ "stylesheet", href_ $ append staticPath "/style.css"]
         script_ [src_ $ append staticPath "/script.js"] (""::Text)
     body_ $ do
