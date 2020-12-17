@@ -63,7 +63,7 @@ renderPage route val = html_ [lang_ "en"] $ do
         style_ [type_ "text/css"] $
             C.render (do
                 fontFace $ do
-                    fontFamily [fanta] [monospace,serif]
+                    fontFamily [fanta] []
                     fontFaceSrc [FontFaceSrcUrl (append staticPath "/fanta-font.ttf") (Just TrueType)])
                 -- fontFace $ do
                 --     fontFamily [tsuku] [monospace,serif]
