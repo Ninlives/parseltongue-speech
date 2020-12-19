@@ -18,7 +18,7 @@ let
 
   inherit (pkgs)
     writeText writeShellScript fetchurl runCommand coreutils pandoc nerdfonts;
-  inherit (pkgs.python3Packages) pandocfilters;
+  inherit (pkgs.python3Packages) pandocfilters fontforge;
   inherit (pkgs.writers) writePython3;
   inherit (pkgs.lib) concatMapStringsSep;
 
@@ -29,6 +29,9 @@ let
 
   filter = writePython3 "filter" { libraries = [ pandocfilters ]; }
     ./code/filter/pandoc-pangu.py;
+
+  shrinkFont = writePython3 "shrink" { libraries = [ fontforge ]; }
+    ./code/font/minimize.py;
 
   static = let
     hljs = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2";
@@ -61,20 +64,19 @@ let
         sha256 = "1qnviqn1kdqi4xy64c59a5n75wziyln1nva5qa18s48xlzks7v4g";
       })
     ];
-    fanta-font = nerdfonts.override { fonts = [ "FantasqueSansMono" ]; };
-    # tsuku-font = (fetchurl {
-    #   url =
-    #     "https://raw.githubusercontent.com/Ninlives/nixos-config/7ea1317e21d0578e163d6bc426fd5d5416faa9d7/resources/fonts/NotoSansSC-Regular.otf";
-    #   sha256 = "0i5i0sh5l7asa784f6h32ys8rs87mlfakbl0h45nzdjlfk4312xn";
-    # });
   in runCommand "static" { } ''
     mkdir -p $out
     ${concatMapStringsSep "\n" (c: "cat ${c} >> $out/style.css") css}
     ${concatMapStringsSep "\n" (j: "cat ${j} >> $out/script.js") js}
-    cp ${fanta-font}/share/fonts/truetype/NerdFonts/'Fantasque Sans Mono Regular Nerd Font Complete Mono.ttf' $out/fanta-font.ttf 
   '';
 
-  speak = writeShellScript "speak" ''
+  speak = let
+    tsuku-font = (fetchurl {
+      url =
+        "https://raw.githubusercontent.com/Ninlives/nixos-config/7ea1317e21d0578e163d6bc426fd5d5416faa9d7/resources/fonts/NotoSansSC-Regular.otf";
+      sha256 = "0i5i0sh5l7asa784f6h32ys8rs87mlfakbl0h45nzdjlfk4312xn";
+    });
+  in writeShellScript "speak" ''
     # <<<sh>>>
     input=$1
     output=$2
@@ -88,6 +90,9 @@ let
 
     ${generator}/bin/speech --input-dir "''${content}" --output-dir "''${output}"
     cp -r --no-preserve=all "${static}/." "''${output}/static"
+    cat ${
+      ./code/generator/src/Page.hs
+    } "''${content}"/* | ${shrinkFont} ${tsuku-font} "''${output}/static/font.woff2"
     # >>>sh<<<
   '';
 in speak
