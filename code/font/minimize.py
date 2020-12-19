@@ -5,11 +5,15 @@ points = list(sys.stdin.read())
 origfont = fontforge.open(sys.argv[1])
 glyphnames = set()
 
+origfont.selection.none()
 for point in points:
-    for glyph in origfont.selection.byGlyphs.select(ord(point)):
-        glyphnames.add(glyph.glyphname)
+    origfont.selection.select(('more',), ord(point))
 
-for glyph in origfont.selection.byGlyphs.all():
+for glyph in origfont.selection.byGlyphs:
+    glyphnames.add(glyph.glyphname)
+
+origfont.selection.all()
+for glyph in origfont.selection.byGlyphs:
     if glyph.glyphname not in glyphnames:
         glyph.clear()
 
