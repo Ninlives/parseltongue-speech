@@ -3,10 +3,14 @@ import sys
 
 points = list(sys.stdin.read())
 origfont = fontforge.open(sys.argv[1])
+glyphnames = set()
 
 for point in points:
-    origfont.selection.select(('more',), ord(point))
+    for glyph in origfont.selection.byGlyphs.select(ord(point)):
+        glyphnames.add(glyph.glyphname)
 
-origfont.selection.invert()
-origfont.clear()
+for glyph in origfont.selection.byGlyphs.all():
+    if glyph.glyphname not in glyphnames:
+        glyph.clear()
+
 origfont.generate(sys.argv[2])
