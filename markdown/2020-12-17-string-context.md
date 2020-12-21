@@ -45,10 +45,10 @@ nix-repl> busybox = derivation {
                       unpack = false;
                     }
 
-nix-repl> :p builtins.getContext busybox.outPath # derivation 返回的实际上是一个set, 其中drvPath是drv文件的路径, outPath是构建成功后会输出的路径, 产生的String Context会被绑定到这两个字符串上
+nix-repl> :p builtins.getContext busybox.outPath # derivation 返回的实际上是一个 set, 其中 drvPath 是 drv 文件的路径, outPath 是构建成功后会输出的路径, 产生的 String Context 会被绑定到这两个字符串上
 { "/nix/store/vq227qrc3b4pz3843cv8djbia525635s-busybox.drv" = { outputs = [ "out" ]; }; }
 
-nix-repl> sentence = "这个句子与${busybox.outPath}进行了拼接, 因此它的String Context传播到了这个字符串"
+nix-repl> sentence = "这个句子与${busybox.outPath}进行了拼接, 因此它的 String Context 传播到了这个字符串"
 
 nix-repl> :p builtins.getContext sentence
 { "/nix/store/vq227qrc3b4pz3843cv8djbia525635s-busybox.drv" = { outputs = [ "out" ]; }; }
@@ -61,7 +61,7 @@ P.S. 在这里`"${busybox.outPath}"`和常见的`"${busybox}"`的写法是等价
 ```nixos
 nix-repl> helloWorld = derivation {
                          name = "hello-world";
-                         builder = "${busybox}"; # String Context传播到了这个字符串中
+                         builder = "${busybox}"; # String Context 传播到了这个字符串中
                          args = [ "ash" "-c" "echo Hello World! > $out" ];
                          system = "x86_64-linux";
                        }
@@ -125,25 +125,25 @@ String Context还会对nix expression的evaluation产生影响, 例如, 若`buil
 { config, lib, pkgs, modulesPath, ... }:
 let
   inherit (config.lib.shared) files;
-  inherit (config.lib.shared.function) dotNixFilesFrom; # 这个函数接收一个路径, 返回该路径下的所有.nix文件
+  inherit (config.lib.shared.function) dotNixFilesFrom; # 这个函数接收一个路径, 返回该路径下的所有 .nix 文件
   configuration = import files.world;
   eval = import (modulesPath + "/..") {
     configuration = { ... }: {
-      imports = [ files.world ]; # files.world指向我的配置的入口, 即configuration.nix
-      disabledModules = dotNixFilesFrom ./.; # Disable该文件所在文件夹下的所有配置, 目前这里只有这一份配置
+      imports = [ files.world ]; # files.world 指向我的配置的入口, 即 configuration.nix
+      disabledModules = dotNixFilesFrom ./.; # Disable 该文件所在文件夹下的所有配置, 目前这里只有这一份配置
     };
   };
-  # 结果就是, 我先得到了一份在去除了这份配置的情况下的config结果
+  # 结果就是, 我先得到了一份在去除了这份配置的情况下的 config 结果
 
   pam-python = pkgs.callPackage (dirs.world.package + /pam-python.nix) { };
   howdy-rule =
     "auth sufficient ${pam-python}/lib/security/pam_python.so ${pkgs.howdy}/lib/security/howdy/pam.py";
 
-  pam-service-config = eval.config.security.pam.services; # security.pam.services的"原始"定义
+  pam-service-config = eval.config.security.pam.services; # security.pam.services 的"原始"定义
 
   patched-pam-text = lib.mapAttrs (service: config:
     let
-      # 修改原本的定义, 插入Howdy相关的规则
+      # 修改原本的定义, 插入 Howdy 相关的规则
       patched-text = pkgs.runCommand "${service}-pam" {
         passAsFile = [ "text" ];
         inherit (config) text;
@@ -207,7 +207,7 @@ let
       } ''
       # 略过这里的脚本
       '';
-      result = builtins.appendContext (builtins.readFile patched-text) # builtins.appendContext可以将一组String Context绑定到字符串上
+      result = builtins.appendContext (builtins.readFile patched-text) # builtins.appendContext 可以将一组 String Context 绑定到字符串上
                (builtins.getContext patched-text);
     in { text = mkForce result; }) pam-service-config;
 in { 

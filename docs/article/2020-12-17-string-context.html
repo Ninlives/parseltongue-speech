@@ -3,11 +3,118 @@
 @font-face
 {
   font-family : "Tsukushi";
-  src         : url(".././static/font.woff2")format("woff2");
+  src         : url(".././static/pageFont.woff2")format("woff2");
+}
+
+@font-face
+{
+  font-family : "Fixedsys";
+  src         : url(".././static/fixedsys.woff2")format("woff2");
+}
+
+@font-face
+{
+  font-family : "Song";
+  src         : url(".././static/song.woff2")format("woff2");
 }
 
 
 /* Generated with Clay, http://fvisser.nl/clay */</style><style type="text/css">
+@-webkit-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@-moz-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@-ms-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@-o-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
 *
 {
   -webkit-box-sizing : border-box;
@@ -16,6 +123,13 @@
   -o-box-sizing      : border-box;
   box-sizing         : border-box;
   text-rendering     : geometricPrecision;
+  -ms-overflow-style : none;
+  scrollbar-width    : none;
+}
+
+*::-webkit-scrollbar
+{
+  display : none;
 }
 
 html
@@ -289,6 +403,27 @@ strong::before
   display : inline;
 }
 
+pre > code
+{
+  font-family : "Fixedsys","Song";
+}
+
+pre > code::after
+{
+  content           : " ";
+  -webkit-animation : cursor 2.0s ease 0.0s infinite normal none;
+  -moz-animation    : cursor 2.0s ease 0.0s infinite normal none;
+  -ms-animation     : cursor 2.0s ease 0.0s infinite normal none;
+  -o-animation      : cursor 2.0s ease 0.0s infinite normal none;
+  animation         : cursor 2.0s ease 0.0s infinite normal none;
+  display           : inline-block;
+  width             : 3px;
+  height            : 1rem;
+  margin-left       : 0.2rem;
+  background        : #a89984;
+  vertical-align    : middle;
+}
+
 pre
 {
   background-color : #1d2021;
@@ -363,10 +498,10 @@ nix-repl&gt; builtins.getContext &quot;A regular string&quot;
                       unpack = false;
                     }
 
-nix-repl&gt; :p builtins.getContext busybox.outPath # derivation 返回的实际上是一个set, 其中drvPath是drv文件的路径, outPath是构建成功后会输出的路径, 产生的String Context会被绑定到这两个字符串上
+nix-repl&gt; :p builtins.getContext busybox.outPath # derivation 返回的实际上是一个 set, 其中 drvPath 是 drv 文件的路径, outPath 是构建成功后会输出的路径, 产生的 String Context 会被绑定到这两个字符串上
 { &quot;/nix/store/vq227qrc3b4pz3843cv8djbia525635s-busybox.drv&quot; = { outputs = [ &quot;out&quot; ]; }; }
 
-nix-repl&gt; sentence = &quot;这个句子与${busybox.outPath}进行了拼接, 因此它的String Context传播到了这个字符串&quot;
+nix-repl&gt; sentence = &quot;这个句子与${busybox.outPath}进行了拼接, 因此它的 String Context 传播到了这个字符串&quot;
 
 nix-repl&gt; :p builtins.getContext sentence
 { &quot;/nix/store/vq227qrc3b4pz3843cv8djbia525635s-busybox.drv&quot; = { outputs = [ &quot;out&quot; ]; }; }</code></pre>
@@ -374,7 +509,7 @@ nix-repl&gt; :p builtins.getContext sentence
 <p>如果<code>derivation</code>的参数中包含了任何的 String Context, 那么它们都会成为所产生的 derivation 的依赖, 继续上面的栗子:</p>
 <pre class="nixos"><code>nix-repl&gt; helloWorld = derivation {
                          name = &quot;hello-world&quot;;
-                         builder = &quot;${busybox}&quot;; # String Context传播到了这个字符串中
+                         builder = &quot;${busybox}&quot;; # String Context 传播到了这个字符串中
                          args = [ &quot;ash&quot; &quot;-c&quot; &quot;echo Hello World! &gt; $out&quot; ];
                          system = &quot;x86_64-linux&quot;;
                        }
@@ -423,25 +558,25 @@ nix-repl&gt; helloWorld
 <pre class="nixos"><code>{ config, lib, pkgs, modulesPath, ... }:
 let
   inherit (config.lib.shared) files;
-  inherit (config.lib.shared.function) dotNixFilesFrom; # 这个函数接收一个路径, 返回该路径下的所有.nix文件
+  inherit (config.lib.shared.function) dotNixFilesFrom; # 这个函数接收一个路径, 返回该路径下的所有 .nix 文件
   configuration = import files.world;
   eval = import (modulesPath + &quot;/..&quot;) {
     configuration = { ... }: {
-      imports = [ files.world ]; # files.world指向我的配置的入口, 即configuration.nix
-      disabledModules = dotNixFilesFrom ./.; # Disable该文件所在文件夹下的所有配置, 目前这里只有这一份配置
+      imports = [ files.world ]; # files.world 指向我的配置的入口, 即 configuration.nix
+      disabledModules = dotNixFilesFrom ./.; # Disable 该文件所在文件夹下的所有配置, 目前这里只有这一份配置
     };
   };
-  # 结果就是, 我先得到了一份在去除了这份配置的情况下的config结果
+  # 结果就是, 我先得到了一份在去除了这份配置的情况下的 config 结果
 
   pam-python = pkgs.callPackage (dirs.world.package + /pam-python.nix) { };
   howdy-rule =
     &quot;auth sufficient ${pam-python}/lib/security/pam_python.so ${pkgs.howdy}/lib/security/howdy/pam.py&quot;;
 
-  pam-service-config = eval.config.security.pam.services; # security.pam.services的&quot;原始&quot;定义
+  pam-service-config = eval.config.security.pam.services; # security.pam.services 的&quot;原始&quot;定义
 
   patched-pam-text = lib.mapAttrs (service: config:
     let
-      # 修改原本的定义, 插入Howdy相关的规则
+      # 修改原本的定义, 插入 Howdy 相关的规则
       patched-text = pkgs.runCommand &quot;${service}-pam&quot; {
         passAsFile = [ &quot;text&quot; ];
         inherit (config) text;
@@ -483,7 +618,7 @@ let
       } &#39;&#39;
       # 略过这里的脚本
       &#39;&#39;;
-      result = builtins.appendContext (builtins.readFile patched-text) # builtins.appendContext可以将一组String Context绑定到字符串上
+      result = builtins.appendContext (builtins.readFile patched-text) # builtins.appendContext 可以将一组 String Context 绑定到字符串上
                (builtins.getContext patched-text);
     in { text = mkForce result; }) pam-service-config;
 in { 

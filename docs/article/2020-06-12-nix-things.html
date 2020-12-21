@@ -3,11 +3,118 @@
 @font-face
 {
   font-family : "Tsukushi";
-  src         : url(".././static/font.woff2")format("woff2");
+  src         : url(".././static/pageFont.woff2")format("woff2");
+}
+
+@font-face
+{
+  font-family : "Fixedsys";
+  src         : url(".././static/fixedsys.woff2")format("woff2");
+}
+
+@font-face
+{
+  font-family : "Song";
+  src         : url(".././static/song.woff2")format("woff2");
 }
 
 
 /* Generated with Clay, http://fvisser.nl/clay */</style><style type="text/css">
+@-webkit-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@-moz-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@-ms-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@-o-keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
+@keyframes cursor
+{
+0.0% 
+{
+  opacity : 0;
+}
+
+50.0% 
+{
+  opacity : 1;
+}
+
+100.0% 
+{
+  opacity : 0;
+}
+
+}
+
 *
 {
   -webkit-box-sizing : border-box;
@@ -16,6 +123,13 @@
   -o-box-sizing      : border-box;
   box-sizing         : border-box;
   text-rendering     : geometricPrecision;
+  -ms-overflow-style : none;
+  scrollbar-width    : none;
+}
+
+*::-webkit-scrollbar
+{
+  display : none;
 }
 
 html
@@ -287,6 +401,27 @@ strong::before
 {
   content : "`";
   display : inline;
+}
+
+pre > code
+{
+  font-family : "Fixedsys","Song";
+}
+
+pre > code::after
+{
+  content           : " ";
+  -webkit-animation : cursor 2.0s ease 0.0s infinite normal none;
+  -moz-animation    : cursor 2.0s ease 0.0s infinite normal none;
+  -ms-animation     : cursor 2.0s ease 0.0s infinite normal none;
+  -o-animation      : cursor 2.0s ease 0.0s infinite normal none;
+  animation         : cursor 2.0s ease 0.0s infinite normal none;
+  display           : inline-block;
+  width             : 3px;
+  height            : 1rem;
+  margin-left       : 0.2rem;
+  background        : #a89984;
+  vertical-align    : middle;
 }
 
 pre
