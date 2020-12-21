@@ -52,8 +52,13 @@ instance IsRoute Route where
 renderPage :: Route a -> a -> Html ()
 renderPage route val = html_ [lang_ "en"] $ do
     let staticPath = append (Route_root `relativeTo` route) "/static"
-        tsuku  = "Tsukushi"
-        fonts = [tsuku]
+        pageFont = "Tsukushi"
+        fixedsys = "Fixedsys"
+        dotsong  = "Song"
+        ftFace ftName fileName = do
+            fontFace $ do
+                fontFamily [ftName] []
+                fontFaceSrc [FontFaceSrcUrl (staticPath `append` "/" `append` fileName) (Just WOFF2)]
     head_ $ do
         meta_ [charset_ "utf-8"]
         meta_ [httpEquiv_ "x-ua-compatible", content_ "ie=edge"]
@@ -61,13 +66,10 @@ renderPage route val = html_ [lang_ "en"] $ do
         title_ routeTitle
         style_ [type_ "text/css"] $
             C.render (do
-                fontFace $ do
-                    fontFamily fonts []
-                    fontFaceSrc [FontFaceSrcUrl (append staticPath "/font.woff2") (Just WOFF2)])
-                -- fontFace $ do
-                --     fontFamily [tsuku] [monospace,serif]
-                --     fontFaceSrc [FontFaceSrcUrl (append staticPath "/tsuku-font.otf") (Just OpenType)])
-        style_ [type_ "text/css"] $ C.render $ pageStyle fonts
+                ftFace pageFont "pageFont.woff2"
+                ftFace fixedsys "fixedsys.woff2"
+                ftFace dotsong  "song.woff2")
+        style_ [type_ "text/css"] $ C.render $ pageStyle [pageFont] [fixedsys,dotsong] 
         link_ [rel_ "stylesheet", href_ $ append staticPath "/style.css"]
         script_ [src_ $ append staticPath "/script.js"] (""::Text)
     body_ $ do

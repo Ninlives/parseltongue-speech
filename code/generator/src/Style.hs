@@ -15,11 +15,22 @@ import qualified Clay.Media as M
 import qualified Clay.Elements as E
 import qualified Clay.Stylesheet as S
 
-pageStyle :: [Text] -> Css
-pageStyle fonts = do
+pageStyle :: [Text] -> [Text] -> Css
+pageStyle pageFonts codeFonts = do
     star ? do
         boxSizing borderBox
         textRendering geometricPrecision
+        "-ms-overflow-style" -: "none"
+        "scrollbar-width" -: "none"
+    "*::-webkit-scrollbar" ? do
+        display none
+
+    keyframes "cursor" [
+         (0,   opacity 0)
+        ,(50,  opacity 1)
+        ,(100, opacity 0)
+        ]
+
     html ? do
         fontSize $ pct 100
         fontFamily fonts fontFamilies
@@ -136,6 +147,17 @@ pageStyle fonts = do
         code # after <> code # before <? do
             content $ stringContent "`"
             display inline
+    pre |> code ? do
+        fontFamily codeFonts fontFamilies
+    pre |> code # after ? do
+        content $ stringContent " "
+        animation "cursor" (sec 2) ease (sec 0) infinite normal none
+        display inlineBlock
+        width $ px 3
+        height $ rem 1
+        marginLeft $ rem 0.2
+        background $ G.gray
+        verticalAlign middle
 
     pre ? do
         backgroundColor G.bgh
@@ -164,4 +186,5 @@ pageStyle fonts = do
     where
         h :: [Int] -> Selector
         h ns = foldl1 (<>) $ map (\n -> selectorFromText $ append "h" $ showt n) ns
+        fonts = pageFonts
         fontFamilies = []
