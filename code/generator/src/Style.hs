@@ -149,6 +149,7 @@ pageStyle pageFonts codeFonts = do
             display inline
     pre |> code ? do
         fontFamily codeFonts fontFamilies
+        radius
     pre |> code # after ? do
         content $ stringContent " "
         animation "cursor" (sec 2) ease (sec 0) infinite normal none
@@ -162,6 +163,8 @@ pageStyle pageFonts codeFonts = do
     pre ? do
         backgroundColor G.bgh
         color G.green
+        border solid (rem 0.2) G.gray8
+        radius
 
     footer ? do
         color G.bg2
@@ -188,3 +191,4 @@ pageStyle pageFonts codeFonts = do
         h ns = foldl1 (<>) $ map (\n -> selectorFromText $ append "h" $ showt n) ns
         fonts = pageFonts
         fontFamilies = []
+        radius = borderRadius (rem 0.5) (rem 0.5) (rem 0.5) (rem 0.5)
